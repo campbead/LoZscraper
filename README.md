@@ -1,6 +1,9 @@
 # LoZscraper
 
-Scraping data from Legend of Zelda (1986) speedruns.  Get time, number of hearts, rubies, bombs and other information..
+This project is analysis of Legend of Zelda (1986) speedruns.  
+
+
+from .  Get time, number of hearts, rubies, bombs and other information..
 
 ## Background
 
@@ -10,6 +13,4 @@ Watching him, I thought it would be cool to collect some data on how his speed r
 - Which rooms give him the most trouble?
 - How big a deal is it to have the "beam-sword"?
 - How much better is he getting over time?
-3
 
-This a the tool I create to scrape data from data from Legend of Zelda speedruns from Arcus87's Twitch broadcasts.
