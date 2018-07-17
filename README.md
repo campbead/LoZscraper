@@ -14,6 +14,9 @@ Watching him, I thought it would be cool to collect some data on how his speed r
 - How big a deal is it to have the "beam-sword"?
 - How much better is he getting over time?
 
+## More information
+
+
 ## Scraper 
 
 
