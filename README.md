@@ -10,7 +10,6 @@ Watching him, I thought it would be cool to collect some data on how his speed r
 - Which rooms give him the most trouble?
 - How big a deal is it to have the "beam-sword"?
 - How much better is he getting over time?
+3
 
-
-This a the tool I create to scrape data from data from Legend of Zelda speedruns from Arcus87's Twitch broadcasts.  
-
+This a the tool I create to scrape data from data from Legend of Zelda speedruns from Arcus87's Twitch broadcasts.
