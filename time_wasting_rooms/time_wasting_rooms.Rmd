@@ -9,7 +9,16 @@ Here we are interested in find out what rooms are the most time wasting.  We'll 
 library(dplyr)
 library(ggplot2)
 
-room_data <- read.csv("../arcus_LOZ_data.csv")
+all_run_data <- read.csv("../data/arcus_LOZ_data.csv")
+```
+
+Now we will find the median time for each room in all the data we have.
+
+```{r}
+room_data <- all_run_data %>%
+  group_by(Room) %>%
+  na.omit() %>%
+  summarise(med = median(Duration))
 ```
 
 

@@ -176,17 +176,27 @@ $(document).ready(function () {
 <p>Here we are interested in find out what rooms are the most time wasting. We’ll get to exactly how I will define that later. But for now let’s just setup the environment and load the data.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShkcGx5cilcbmxpYnJhcnkoZ2dwbG90Milcblxucm9vbV9kYXRhIDwtIHJlYWQuY3N2KFwiLi4vYXJjdXNfTE9aX2RhdGEuY3N2XCIpXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShkcGx5cilcbmxpYnJhcnkoZ2dwbG90MilcbmFsbF9ydW5fZGF0YSA8LSByZWFkLmNzdihcIi4uL2RhdGEvYXJjdXNfTE9aX2RhdGEuY3N2XCIpXG5gYGAifQ== -->
 <pre class="r"><code>library(dplyr)
 library(ggplot2)
-
-room_data &lt;- read.csv(&quot;../arcus_LOZ_data.csv&quot;)</code></pre>
+all_run_data &lt;- read.csv(&quot;../data/arcus_LOZ_data.csv&quot;)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Now we will find the median time for each room in all the data we have.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucm9vbV9kYXRhIDwtIGFsbF9ydW5fZGF0YSAlPiVcbiAgZ3JvdXBfYnkoUm9vbSkgJT4lXG4gIG5hLm9taXQoKSAlPiVcbiAgc3VtbWFyaXNlKG1lZCA9IG1lZGlhbihEdXJhdGlvbikpXG5gYGAifQ== -->
+<pre class="r"><code>room_data &lt;- all_run_data %&gt;%
+  group_by(Room) %&gt;%
+  na.omit() %&gt;%
+  summarise(med = median(Duration))</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiV2hpY2ggUm9vbXMgYXJlIHRoZSBtb3N0IHRpbWUgd2FzdGluZz8iCm91dHB1dDogaHRtbF9ub3RlYm9vawotLS0KCkhlcmUgd2UgYXJlIGludGVyZXN0ZWQgaW4gZmluZCBvdXQgd2hhdCByb29tcyBhcmUgdGhlIG1vc3QgdGltZSB3YXN0aW5nLiAgV2UnbGwgZ2V0IHRvIGV4YWN0bHkgaG93IEkgd2lsbCBkZWZpbmUgdGhhdCBsYXRlci4gIEJ1dCBmb3Igbm93IGxldCdzIGp1c3Qgc2V0dXAgdGhlIGVudmlyb25tZW50IGFuZCBsb2FkIHRoZSBkYXRhLgoKYGBge3J9CmxpYnJhcnkoZHBseXIpCmxpYnJhcnkoZ2dwbG90MikKCnJvb21fZGF0YSA8LSByZWFkLmNzdigiLi4vYXJjdXNfTE9aX2RhdGEuY3N2IikKYGBgCgoK</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiV2hpY2ggUm9vbXMgYXJlIHRoZSBtb3N0IHRpbWUgd2FzdGluZz8iCm91dHB1dDogaHRtbF9ub3RlYm9vawotLS0KCkhlcmUgd2UgYXJlIGludGVyZXN0ZWQgaW4gZmluZCBvdXQgd2hhdCByb29tcyBhcmUgdGhlIG1vc3QgdGltZSB3YXN0aW5nLiAgV2UnbGwgZ2V0IHRvIGV4YWN0bHkgaG93IEkgd2lsbCBkZWZpbmUgdGhhdCBsYXRlci4gIEJ1dCBmb3Igbm93IGxldCdzIGp1c3Qgc2V0dXAgdGhlIGVudmlyb25tZW50IGFuZCBsb2FkIHRoZSBkYXRhLgoKYGBge3J9CmxpYnJhcnkoZHBseXIpCmxpYnJhcnkoZ2dwbG90MikKCmFsbF9ydW5fZGF0YSA8LSByZWFkLmNzdigiLi4vZGF0YS9hcmN1c19MT1pfZGF0YS5jc3YiKQpgYGAKCk5vdyB3ZSB3aWxsIGZpbmQgdGhlIG1lZGlhbiB0aW1lIGZvciBlYWNoIHJvb20gaW4gYWxsIHRoZSBkYXRhIHdlIGhhdmUuCgpgYGB7cn0Kcm9vbV9kYXRhIDwtIGFsbF9ydW5fZGF0YSAlPiUKICBncm91cF9ieShSb29tKSAlPiUKICBuYS5vbWl0KCkgJT4lCiAgc3VtbWFyaXNlKG1lZCA9IG1lZGlhbihEdXJhdGlvbikpCmBgYAoKCg==</div>
 
 
 
