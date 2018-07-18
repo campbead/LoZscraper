@@ -1,0 +1,247 @@
+---
+title: "Which screen kill runs?"
+output: html_notebook
+---
+
+First thing is first, let's load the needed libraries and the data
+
+```{r}
+library(dplyr)
+library(ggplot2)
+
+room_data <- read.csv("merged_export_2.csv")
+```
+
+
+Let's start with a data frame were we calculate the number of times each room is entered and each time the run ends on the run.
+
+```{r}
+my_count <- room_data %>%
+  group_by(Room) %>%
+  summarise(times_killed_run = sum(is.na(Duration)), times_entered = length (Duration) ) %>%
+  arrange(desc(times_entered))
+```
+
+So here's a bit of magic you need to make sure stuff is displayed in right order.  I'll need to fix this later thougn because the order might not be 100% correct.
+
+```{r}
+my_count$Room <- 
+  reorder(my_count$Room,desc(my_count$times_entered))
+```
+
+And let's make a first go at ploting this stuff up.
+```{r}
+ggplot(my_count, aes(y=times_entered,x=Room, f)) + 
+  geom_point(color = 'darkred')
+```
+
+The first thing to fix here is that there are WAY too many x-labels.  
+
+```{r}
+ggplot(my_count, aes(y=times_entered,x=Room, f)) + 
+  geom_point(color = 'darkred') +
+  scale_x_discrete(name="Room Number",limits=c('1OH81
+', '3DG81', '2OD71'))
+```
+ Ok so that didn't really work like I thought it might, it filters points.  Now let's try soemthing else
+ 
+```{r}
+ggplot(my_count, aes(y=times_entered,x=Room, f)) + 
+  geom_point(color = 'darkred') +
+  theme(axis.text.x = element_blank(),axis.ticks = element_blank())
+```
+
+
+Ok that gets rid of the Room numbers which I suppose is better.   Let's try with our truncated list again
+
+```{r}
+ggplot(my_count, aes(y=times_entered,x=Room, f)) + 
+  geom_point(color = 'darkred') +
+  scale_x_discrete(breaks=c('1OH81', '3DG81', '2OD71'))
+```
+Ok great that works.  Now let's just make a list of all those rooms to pick
+
+```{r}
+rooms_to_display = c('1OH81', '3DG81', '2OD71', '4DF81','3OF61', '1DF81', 
+                     '4OH41', ' 5DF71')
+```
+
+```{r}
+ggplot(my_count, aes(y=times_entered,x=Room, f)) + 
+  geom_point(color = 'darkred') +
+  scale_x_discrete(breaks=rooms_to_display)
+```
+
+Ok I just noticed some weird ordering stuff.  I definitely need to fix that.
+
+Ok i'm back now and I have a few minutes.  I think the first thing to do is to fix the order stuff.
+
+```{r}
+my_count$Room[70:72]
+my_count$times_entered[70:72]
+```
+
+Ok room 5OP41 appears out of place.  It may appear TWICE in 'unique_room_list_double_hundo.csv'  
+
+CONFIRMED it does appear twice.  Ok that will require a fix.
+
+I still need a function to play the room...
+
+Ok so the room is actually a quick heart grab and it also apears to have never killed a run.  Interestingly, Dungeon 2 has NEVER killed a run in my data.
+
+TODO:
+
+- CHECK REST OF ROOMS
+- FIX YOUR ROOM LIST
+- CREATE FUNCTION INPUT ROOM_ID OUTPUT ROOM NUMBER
+- CREATE FUNCTION INPUT ROOM_ID OUTPUT PICTURE OF ROOM
+
+
+this shows the for each run where 5OP41 is present, it's in the data twice
+```{r}
+room_data %>%
+  filter(room_data$Room == '5OP41') %>%
+  count(Run_Man) %>%
+  summarise(min(n))
+```
+
+Create a list of rooms to filter
+
+```{r}
+runs2filter <- room_data %>%
+  filter(Room == '5OP41') %>%
+  distinct(Run_Man)
+```
+
+For each room to filter select '5OP41' and keep the one with older abs time
+
+```{r}
+for (run in runs2filter)
+{
+  rooms <- room_data %>%
+    filter(Run_Man == run) %>%
+    filter(Room == '5OP41') 
+  print(paste(run))
+}
+```
+ ok let's try to get this to work once okay
+
+Is there something weird with 8450 and 6133?
+
+```{r}
+run = 6182
+room <- room_data %>%
+  filter(Run_Man == run) %>%
+  filter(Room == '5OP41')
+print(room)
+
+run = 6133
+room <- room_data %>%
+  filter(Run_Man == run) %>%
+  filter(Room == '5OP41')
+print(room)
+
+run = 8450
+room <- room_data %>%
+  filter(Run_Man == run) %>%
+  filter(Room == '5OP41')
+print(room)
+```
+
+
+
+```{r}
+run = 6133
+room <- room_data %>%
+  filter(Run_Man == run) %>%
+  filter(Room == '5OP41')
+  
+max_time <- max(room$Abs_time)
+
+room2 <- room %>%
+  filter(Abs_time == max_time) %>%
+  mutate(Room = '5OP42')
+  
+```
+
+Okay so that changes a SINGLE room ! Phew
+
+
+Create an empty column onto rooms2filter
+```{r}
+runs2filter$keys<- -1
+```
+
+
+```{r}
+run = 8450
+room <- room_data %>%
+  filter(Run_Man == run) %>%
+  filter(Room == '5OP41')
+
+max_time <- max(room$Abs_time)
+print(max_time)
+
+room2 <-room %>%
+  filter(Abs_time == max_time) %>%
+  .$AKey
+
+print(room2)
+runs2filter$keys[runs2filter$Run_Man == run] <- room2
+
+print(runs2filter)
+```
+
+Let's try it for all of them
+
+```{r}
+for (run in runs2filter$Run_Man)
+{
+  
+  room <- room_data %>%
+    filter(Run_Man == run) %>%
+    filter(Room == '5OP41')
+  
+  max_time <- max(room$Abs_time)
+  
+  
+  room2 <-room %>%
+    filter(Abs_time == max_time) %>%
+    .$AKey
+  
+  
+  runs2filter$keys[runs2filter$Run_Man == run] <- room2
+  
+}
+```
+That worked! Hurray!!!
+
+Let's try fixing `room_data`
+
+```{r}
+room_data_fixed <- room_data
+#add factor
+room_list <- levels(room_data_fixed$Room)
+new_room_list <- c(room_list, '5OP42') 
+levels(room_data_fixed$Room) = new_room_list
+key = 116
+
+room_data_fixed$Room[room_data_fixed$AKey == key] <- '5OP42'
+```
+
+
+```{r}
+room_data_fixed <- room_data
+room_list <- levels(room_data_fixed$Room)
+new_room_list <- c(room_list, '5OP42') 
+levels(room_data_fixed$Room) = new_room_list
+for (key in runs2filter$keys){
+  
+  room_data_fixed$Room[room_data_fixed$AKey == key] <- '5OP42'
+  
+}
+```
+
+
+Wow okay that worked
+Next to do is the save 'room_data_fixed' to a csv and restructure this file.
