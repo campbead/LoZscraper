@@ -9,7 +9,8 @@ First thing is first, let's load the needed libraries and the data
 library(dplyr)
 library(ggplot2)
 
-room_data <- read.csv("merged_export_2.csv")
+room_data <- read.csv("../data/fixed_room_data.csv")
+room_order <- read.csv("../data/unique_room_list_double_hundo_fixed_with_index.csv", header = FALSE, col.names = c('Number','Room'))
 ```
 
 
@@ -18,13 +19,13 @@ Let's start with a data frame were we calculate the number of times each room is
 ```{r}
 my_count <- room_data %>%
   group_by(Room) %>%
-  summarise(times_killed_run = sum(is.na(Duration)), times_entered = length (Duration) ) %>%
-  arrange(desc(times_entered))
+  summarise(times_killed_run = sum(is.na(Duration)), times_entered = length (Duration) )
 ```
 
 So here's a bit of magic you need to make sure stuff is displayed in right order.  I'll need to fix this later thougn because the order might not be 100% correct.
 
 ```{r}
+
 my_count$Room <- 
   reorder(my_count$Room,desc(my_count$times_entered))
 ```
