@@ -129,4 +129,30 @@ ggplot(rooms_ordered, aes(y=times_killed_run/times_entered,x=Room)) +
   coord_cartesian(ylim = c(0,0.4)) + 
   xlab('Room')
 ```
+Let's do a quick test with ggplot, I want to know if it is possible to shorten my room rectangles.
+
+```{r}
+add_rects <- function() {
+  annotate("rect",xmin = '3DG81', xmax = '3DH41', ymin = -Inf, ymax = Inf, alpha = 0.3, fill = 'blue' )
+#  geom_rect(aes(y=times_killed_run/times_entered, x = Room, xmin = '3DG81', xmax = '3DH41', ymin = -Inf, ymax = Inf), data = rooms_ordered, alpha=0.3 , fill = 'green')
+}
+
+rooms_to_display = c('1OH81', '2OD71', '3OF61', '4OH41', '5OL11', 
+                     '6OM41', '7OC51', '8OC31', '9ON71')
+
+ggplot(rooms_ordered, aes(y=times_killed_run/times_entered,x=Room)) + 
+  geom_point(color = 'darkred') + 
+  add_rects() + 
+  geom_point(color = 'darkred') + 
+  scale_x_discrete(breaks=rooms_to_display) +
+  theme_minimal() + 
+  theme(axis.text.x = element_text(angle = 65, hjust =1)) + 
+  ylab('percent of times room killed run') + 
+  coord_cartesian(ylim = c(0,0.4)) + 
+  xlab('Room')
+
+```
+
+So that work!  I just have to create a function for my rooms.  The only thing that is a little bit hackly is that I have to call `add_rects()` after `geom_point()` otherwise the range of the rect is incorrect, this results in rects being above the points the the coloring to be off.  My current workaround for this problem is to then and another `geom_point()` call after `add_rects()` but that's a bit hack-y for my taste since you're ploting the points twice.  I think to fix this would require a mapping between room number and room in in the `add_rects()` function but I'm not sure if that's something I want to figure out right now.
+
 
