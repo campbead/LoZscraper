@@ -118,12 +118,15 @@ ggplot(rooms_ordered, aes(y=times_killed_run,x=Room)) +
 rooms_to_display = c('1OH81', '2OD71', '3OF61', '4OH41', '5OL11', 
                      '6OM41', '7OC51', '8OC31', '9ON71')
 ggplot(rooms_ordered, aes(y=times_killed_run/times_entered,x=Room)) + 
+  geom_rect(aes(xmin = '3DG81', xmax = '3DH41', ymin = -Inf, ymax = Inf), alpha = 0.4 , color = 'blue',fill = 'blue') +
+  geom_rect(aes(xmin = '4DF81', xmax = '4DH11', ymin = -Inf, ymax = Inf), alpha = 0.4 , color = 'blue',fill = 'blue') +
+  geom_rect(aes(xmin = '1DF81', xmax = '1DI41', ymin = -Inf, ymax = Inf), alpha = 0.4 , color = 'blue',fill = 'blue') +
   geom_point(color = 'darkred') +
-  #scale_x_discrete(breaks=rooms_to_display) +
+  scale_x_discrete(breaks=rooms_to_display) +
   theme_minimal() + 
   theme(axis.text.x = element_text(angle = 65, hjust =1)) + 
   ylab('percent of times room killed run') + 
-  coord_cartesian(ylim = c(0,0.4), xlim = c(1,50)) + 
+  coord_cartesian(ylim = c(0,0.4)) + 
   xlab('Room')
 ```
 
