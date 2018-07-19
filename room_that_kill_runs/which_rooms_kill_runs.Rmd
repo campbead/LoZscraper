@@ -158,29 +158,50 @@ So that work!  I just have to create a function for my rooms.  The only thing th
 make the all the dungeons blue... for some reason this doesn't work...
 ```{r}
 add_rects_2 <- function() {
-  annotate("rect",xmin = '3DG81', xmax = '3DH41', ymin = -Inf, ymax = Inf, alpha = 0.3, fill = 'blue' ) +
-  annotate("rect",xmin = '4DF81', xmax = '4DH11', ymin = -Inf, ymax = Inf, alpha = 0.3, fill = 'blue' ) +
-  annotate("rect",xmin = '1DF81', xmax = '1DI41', ymin = -Inf, ymax = Inf, alpha = 0.3, fill = 'blue' ) +
-  annotate("rect",xmin = '5DG81', xmax = '5DE21', ymin = -Inf, ymax = Inf, alpha = 0.3, fill = 'blue' ) +
-  annotate("rect",xmin = '2DF81', xmax = '2DF11', ymin = -Inf, ymax = Inf, alpha = 0.3, fill = 'blue' ) +
-  annotate("rect",xmin = '7DE81', xmax = '7DG31', ymin = -Inf, ymax = Inf, alpha = 0.3, fill = 'blue' ) +
-  annotate("rect",xmin = '6DE81', xmax = '6DH11', ymin = -Inf, ymax = Inf, alpha = 0.3, fill = 'blue' ) +
-  annotate("rect",xmin = '8DG81', xmax = '8DE31', ymin = -Inf, ymax = Inf, alpha = 0.3, fill = 'blue' ) +
+  list(
+  annotate("rect",xmin = '3DG81', xmax = '3DH41', ymin = -Inf, ymax = Inf, alpha = 0.3, fill = 'blue' ),
+  annotate("rect",xmin = '4DF81', xmax = '4DH11', ymin = -Inf, ymax = Inf, alpha = 0.3, fill = 'blue' ),
+  annotate("rect",xmin = '1DF81', xmax = '1DI41', ymin = -Inf, ymax = Inf, alpha = 0.3, fill = 'blue' ),
+  annotate("rect",xmin = '5DG81', xmax = '5DE21', ymin = -Inf, ymax = Inf, alpha = 0.3, fill = 'blue' ),
+  annotate("rect",xmin = '2DF81', xmax = '2DF11', ymin = -Inf, ymax = Inf, alpha = 0.3, fill = 'blue' ),
+  annotate("rect",xmin = '7DE81', xmax = '7DG31', ymin = -Inf, ymax = Inf, alpha = 0.3, fill = 'blue' ),
+  annotate("rect",xmin = '6DE81', xmax = '6DH11', ymin = -Inf, ymax = Inf, alpha = 0.3, fill = 'blue' ),
+  annotate("rect",xmin = '8DG81', xmax = '8DE31', ymin = -Inf, ymax = Inf, alpha = 0.3, fill = 'blue' ),
   annotate("rect",xmin = '9DI81', xmax = '9DE41', ymin = -Inf, ymax = Inf, alpha = 0.3, fill = 'blue' ) 
+  
+  )  
 }
 
 rooms_to_display = c('1OH81', '2OD71', '3OF61', '4OH41', '5OL11', 
                      '6OM41', '7OC51', '8OC31', '9ON71')
 
 ggplot(rooms_ordered, aes(y=times_killed_run/times_entered,x=Room)) + 
-  geom_point(color = 'darkred') + 
-  add_rects() + 
-  geom_point(color = 'darkred') + 
+  geom_point(size = 0.1, color = 'darkred') + 
+  add_rects_2() + 
+  geom_point(size = 0.5, color = 'darkred') + 
   scale_x_discrete(breaks=rooms_to_display) +
   theme_minimal() + 
   theme(axis.text.x = element_text(angle = 65, hjust =1)) + 
-  ylab('percent of times room killed run') + 
+  ylab('fraction times room killed current run') + 
   coord_cartesian(ylim = c(0,0.4)) + 
   xlab('Room')
 ```
+
+Ok let's dive a little deeper into the analysis
+
+```{r}
+rooms_ordered$kill_frac <- rooms_ordered$times_killed_run / rooms_ordered$times_entered
+```
+
+In checking out this data frame I'm particularly interested in room 4ON31, aside from the first overworld section 1OXXX, this is the largest run killer in the overworld.  I'm wondering if this run is the distinction between the "double hundo" route and the "30-30" route.  My scraper only catches double hundo routes not 30-30.  
+
+```{r}
+explore_runs <- room_data %>%
+  filter(Room == '4ON31' ) %>%
+  filter(is.na(Duration) == TRUE)
+```
+
+I now have a list of run where I can manually check for 30-30, there are 21 candidate runs here, which honestly seems a bit low.  But who knows. I'm going to open up my videos and have a look.
+
+Let's check out run 6301, which is in my file '01Dec2017-2'.  Ok so on this instance, he went out of order, but not exactly 30-30.  I'm going to check another, 6541, in '06Dec2017-2'.  Ok so I've confirmed that these runs are where the 'double hundos' split from the 30-30's.   I could re-do these or filter these runs out, but I think i'll just leave them in for the time being since they represent such a small fraction of the total runs (21/4581 or 0.5%).
 
