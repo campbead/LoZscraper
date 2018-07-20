@@ -8,6 +8,8 @@ First thing is first, let's load the needed libraries and the data
 ```{r}
 library(dplyr)
 library(ggplot2)
+library(grid)
+library(gridExtra)
 
 room_data <- read.csv("../data/fixed_room_data.csv")
 room_order <- read.csv("../data/unique_room_list_double_hundo_fixed_with_index.csv", header = FALSE, col.names = c('Number','Room'))
@@ -158,16 +160,18 @@ So that work!  I just have to create a function for my rooms.  The only thing th
 make the all the dungeons blue... for some reason this doesn't work...
 ```{r}
 add_rects_2 <- function() {
+  my_alpha = 0.5
+  fill_color = 'steelblue'
   list(
-  annotate("rect",xmin = '3DG81', xmax = '3DH41', ymin = -Inf, ymax = Inf, alpha = 0.3, fill = 'blue' ),
-  annotate("rect",xmin = '4DF81', xmax = '4DH11', ymin = -Inf, ymax = Inf, alpha = 0.3, fill = 'blue' ),
-  annotate("rect",xmin = '1DF81', xmax = '1DI41', ymin = -Inf, ymax = Inf, alpha = 0.3, fill = 'blue' ),
-  annotate("rect",xmin = '5DG81', xmax = '5DE21', ymin = -Inf, ymax = Inf, alpha = 0.3, fill = 'blue' ),
-  annotate("rect",xmin = '2DF81', xmax = '2DF11', ymin = -Inf, ymax = Inf, alpha = 0.3, fill = 'blue' ),
-  annotate("rect",xmin = '7DE81', xmax = '7DG31', ymin = -Inf, ymax = Inf, alpha = 0.3, fill = 'blue' ),
-  annotate("rect",xmin = '6DE81', xmax = '6DH11', ymin = -Inf, ymax = Inf, alpha = 0.3, fill = 'blue' ),
-  annotate("rect",xmin = '8DG81', xmax = '8DE31', ymin = -Inf, ymax = Inf, alpha = 0.3, fill = 'blue' ),
-  annotate("rect",xmin = '9DI81', xmax = '9DE41', ymin = -Inf, ymax = Inf, alpha = 0.3, fill = 'blue' ) 
+  annotate("rect",xmin = '3DG81', xmax = '3DH41', ymin = -Inf, ymax = Inf, alpha = my_alpha, fill = fill_color ),
+  annotate("rect",xmin = '4DF81', xmax = '4DH11', ymin = -Inf, ymax = Inf, alpha = my_alpha, fill = fill_color ),
+  annotate("rect",xmin = '1DF81', xmax = '1DI41', ymin = -Inf, ymax = Inf, alpha = my_alpha, fill = fill_color ),
+  annotate("rect",xmin = '5DG81', xmax = '5DE21', ymin = -Inf, ymax = Inf, alpha = my_alpha, fill = fill_color ),
+  annotate("rect",xmin = '2DF81', xmax = '2DF11', ymin = -Inf, ymax = Inf, alpha = my_alpha, fill = fill_color ),
+  annotate("rect",xmin = '7DE81', xmax = '7DG31', ymin = -Inf, ymax = Inf, alpha = my_alpha, fill = fill_color ),
+  annotate("rect",xmin = '6DE81', xmax = '6DH11', ymin = -Inf, ymax = Inf, alpha = my_alpha, fill = fill_color ),
+  annotate("rect",xmin = '8DG81', xmax = '8DE31', ymin = -Inf, ymax = Inf, alpha = my_alpha, fill = fill_color ),
+  annotate("rect",xmin = '9DI81', xmax = '9DE41', ymin = -Inf, ymax = Inf, alpha = my_alpha, fill = fill_color ) 
   
   )  
 }
@@ -204,4 +208,73 @@ explore_runs <- room_data %>%
 I now have a list of run where I can manually check for 30-30, there are 21 candidate runs here, which honestly seems a bit low.  But who knows. I'm going to open up my videos and have a look.
 
 Let's check out run 6301, which is in my file '01Dec2017-2'.  Ok so on this instance, he went out of order, but not exactly 30-30.  I'm going to check another, 6541, in '06Dec2017-2'.  Ok so I've confirmed that these runs are where the 'double hundos' split from the 30-30's.   I could re-do these or filter these runs out, but I think i'll just leave them in for the time being since they represent such a small fraction of the total runs (21/4581 or 0.5%).
+
+Ok now I want to play around with some custom room labels
+
+```{r}
+dungeon_rooms = c('3DG81', '4DF81', '1DF81', 
+                  '5DG81', '2DF81', '7DE81',
+                  '6DE81', '8DG81', '9DI81')
+dungeon_display = c('3DG81' = 'D3', '4DF81' = 'D4', '1DF81' = 'D1',
+                    '5DG81' = 'D5', '2DF81' = 'D2', '7DE81' = 'D7',
+                    '6DE81' = 'D6', '8DG81' = 'D8', '9DI81' = 'D9')
+
+
+
+upper_plot <- ggplot(rooms_ordered, aes(y=times_killed_run,x=Room)) + 
+  geom_point(size = 0.1, color = 'darkred') + 
+  add_rects_2() + 
+  geom_point(size = 0.2, color = 'darkred') + 
+  scale_x_discrete(breaks=dungeon_rooms, labels=dungeon_display) +
+  theme_minimal() + 
+  #theme(axis.text.x = element_text(angle = 65, hjust =1)) + 
+  ylab('fraction times room killed current run') + 
+  #coord_cartesian(ylim = c(0,0.4)) + 
+  xlab('Position in run')
+
+lower_plot <- ggplot(rooms_ordered, aes(y=kill_frac,x=Room)) + 
+  geom_point(size = 0.1, color = 'darkred') + 
+  add_rects_2() + 
+  geom_point(size = 0.2, color = 'darkred') + 
+  scale_x_discrete(breaks=dungeon_rooms, labels=dungeon_display) +
+  theme_minimal() + 
+  #theme(axis.text.x = element_text(angle = 65, hjust =1)) + 
+  ylab('fraction times room killed current run') + 
+  coord_cartesian(ylim = c(0,0.4)) + 
+  xlab('Position in run')
+
+#upper_plot + lower_plot + facet_wrap( ~ carb, nrow = 1) + theme(legend.position = "none") +
+#  ggtitle("facetted plot")
+
+grid.arrange(upper_plot, lower_plot, ncol = 1)
+#multiplot(upper_plot, lower_plot)
+```
+
+I think I might like this better as a single graph
+
+```{r}
+
+# calculate the total number of runs
+max_kills <- max(rooms_ordered$times_killed_run)
+
+n <- length(rooms_ordered$kill_frac)
+penultimate_kill_frac <- sort(rooms_ordered$kill_frac,partial=n-1)[n-1]
+
+# plot combined figure
+ggplot(rooms_ordered, aes(x=Room)) + 
+  geom_point(aes(y = times_killed_run /max_kills ), size = 1, color = 'firebrick') + 
+  add_rects_2() + 
+  geom_point(aes(y = times_killed_run/max_kills ), size = 1, color = 'firebrick') + 
+  geom_point(aes(y=kill_frac/penultimate_kill_frac), size = 1, color = 'darkgreen') +
+  scale_x_discrete(breaks=dungeon_rooms, labels=dungeon_display) +
+  theme_minimal() + 
+  #theme(axis.text.x = element_text(angle = 65, hjust =1)) + 
+  ylab('fraction times room killed current run') + 
+  coord_cartesian(ylim = c(0,1.0)) + 
+  xlab('Position in run')
+
+  
+
+```
+
 
