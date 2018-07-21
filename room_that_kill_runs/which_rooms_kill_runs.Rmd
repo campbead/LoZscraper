@@ -92,7 +92,7 @@ Ok now let's try some themes
 ```{r}
 rooms_to_display = c('1OH81', '2OD71', '3OF61', '4OH41', '5OL11', 
                      '6OM41', '7OC51', '8OC31', '9ON71')
-ggplot(rooms_ordered, aes(y=times_entered,x=Room)) + .
+ggplot(rooms_ordered, aes(y=times_entered,x=Room)) +
   geom_point(color = 'darkred') +
   scale_x_discrete(breaks=rooms_to_display) +
   theme_minimal() + 
@@ -257,6 +257,8 @@ I think I might like this better as a single graph
 # calculate the total number of runs
 max_kills <- max(rooms_ordered$times_killed_run)
 
+#rooms_ordered$kill_frac <- rooms_ordered$times_killed_run / rooms_ordered$times_entered
+
 n <- length(rooms_ordered$kill_frac)
 penultimate_kill_frac <- sort(rooms_ordered$kill_frac,partial=n-1)[n-1]
 
@@ -277,4 +279,19 @@ ggplot(rooms_ordered, aes(x=Room)) +
 
 ```
 
+
+It's time to make some "production" level graphics for my blog post on Medium.  The first one I want to make is times entered room graphic.
+
+```{r}
+ggplot(rooms_ordered, aes(x=Room)) + 
+  geom_point(aes(y = times_entered ), size = 1, color = 'firebrick') + 
+  add_rects_2() + 
+  geom_point(aes(y = times_entered), size = 1, color = 'firebrick') + 
+  scale_x_discrete(breaks=dungeon_rooms, labels=dungeon_display) +
+  theme_minimal() + 
+  #theme(axis.text.x = element_text(angle = 65, hjust =1)) + 
+  ylab('times entered room') + 
+  #coord_cartesian(ylim = c(0,1.0)) + 
+  xlab('room')
+```
 
