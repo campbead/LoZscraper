@@ -1,6 +1,6 @@
 # LoZscraper
 
-This project is analysis of Legend of Zelda (1986) speedruns from [Arcus87](https://www.twitch.tv/arcus87/).  Here I include my Arcus Twitch Vod Scraper (Python), the scaper data, and my analsys (R Markdown)
+This project is analysis of Legend of Zelda (1986) speedruns from [Arcus87](https://www.twitch.tv/arcus87/).  Here I include my Arcus Twitch Vod Scraper (Python), the scaper data, and my analysis (R Markdown)
 
 This 
 from .  Get time, number of hearts, rubies, bombs and other information..
