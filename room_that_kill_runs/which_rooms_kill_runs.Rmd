@@ -24,7 +24,7 @@ my_count <- room_data %>%
   summarise(times_killed_run = sum(is.na(Duration)), times_entered = length (Duration) )
 ```
 
-So here's a bit of magic you need to make sure stuff is displayed in right order.  I'll need to fix this later thougn because the order might not be 100% correct.
+So here's a bit of magic you need to make sure stuff is displayed in right order.  I'll need to fix this later though because the order might not be 100% correct.
 
 ```{r}
 rooms_ordered <- merge(my_count, room_order, by= "Room")
@@ -32,7 +32,7 @@ rooms_ordered$Room <-
   reorder(rooms_ordered$Room, rooms_ordered$Number)
 ```
 
-And let's make a first go at ploting this stuff up.
+And let's make a first go at plotting this stuff up.
 ```{r}
 ggplot(rooms_ordered, aes(y=times_entered,x=Room, f)) + 
   geom_point(color = 'darkred')
@@ -46,7 +46,7 @@ ggplot(rooms_ordered, aes(y=times_entered,x=Room, f)) +
   scale_x_discrete(name="Room Number",limits=c('1OH81
 ', '3DG81', '2OD71'))
 ```
- Ok so that didn't really work like I thought it might, it filters points.  Now let's try soemthing else
+ OK so that didn't really work like I thought it might, it filters points.  Now let's try something else
  
 ```{r}
 ggplot(rooms_ordered, aes(y=times_entered,x=Room, f)) + 
@@ -55,14 +55,14 @@ ggplot(rooms_ordered, aes(y=times_entered,x=Room, f)) +
 ```
 
 
-Ok that gets rid of the Room numbers which I suppose is better.   Let's try with our truncated list again
+OK that gets rid of the Room numbers which I suppose is better.   Let's try with our truncated list again
 
 ```{r}
 ggplot(rooms_ordered, aes(y=times_entered,x=Room, f)) + 
   geom_point(color = 'darkred') +
   scale_x_discrete(breaks=c('1OH81', '3DG81', '2OD71'))
 ```
-Ok great that works.  Now let's just make a list of all those rooms to pick
+OK great that works.  Now let's just make a list of all those rooms to pick
 
 ```{r}
 rooms_to_display = c('1OH81', '3DG81', '2OD71', '4DF81','3OF61', '1DF81', 
