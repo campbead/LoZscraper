@@ -283,15 +283,36 @@ ggplot(rooms_ordered, aes(x=Room)) +
 It's time to make some "production" level graphics for my blog post on Medium.  The first one I want to make is times entered room graphic.
 
 ```{r}
+
+# define the rectangles
+
+dungeon_rooms_centered = c('3DD62', '4DG41', '1DE31', 
+                           '5DG72', '2DG51', '7DE21',
+                           '6DE31', '8DG41', '9DC31')
+dungeon_display_centered = c('3DD62' = 'D3', '4DG41' = 'D4', '1DE31' = 'D1',
+                             '5DG72' = 'D5', '2DG51' = 'D2', '7DE21' = 'D7',
+                             '6DE31' = 'D6', '8DG41' = 'D8', '9DC31' = 'D9')
+overworld_rooms_centered = c('1OG81', '2OE71', '3OH61',
+                             '4ON31', '5OA71', '6OE41',
+                             '7OB51', '8OM41', '9OH31')
+overworld_display_centered = c('1OG81' = 'O1', '2OE71' = 'O2', '3OH61' = 'O3',
+                             '4ON31' = 'O4', '5OA71' = 'O5', '6OE41' = 'O6',
+                             '7OB51' = 'O7', '8OM41' = 'O8', '9OH31' = 'O9')
+
+run_rooms_centered = c(dungeon_rooms_centered, overworld_rooms_centered)
+run_display_centered = c(dungeon_display_centered, overworld_display_centered)
+
 ggplot(rooms_ordered, aes(x=Room)) + 
-  geom_point(aes(y = times_entered ), size = 1, color = 'firebrick') + 
+  geom_point(aes(y = times_entered ), size = 0.3, color = 'firebrick') + 
   add_rects_2() + 
-  geom_point(aes(y = times_entered), size = 1, color = 'firebrick') + 
-  scale_x_discrete(breaks=dungeon_rooms, labels=dungeon_display) +
+  geom_point(aes(y = times_entered), size = 0.3, color = 'firebrick') + 
+  scale_x_discrete(breaks=run_rooms_centered, labels=run_display_centered) +
   theme_minimal() + 
   #theme(axis.text.x = element_text(angle = 65, hjust =1)) + 
-  ylab('times entered room') + 
+  ylab('times entered room in all runs') + 
   #coord_cartesian(ylim = c(0,1.0)) + 
-  xlab('room')
+  xlab('position in run (D = dungeon , O = overworld)') +
+  theme(panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank())
 ```
 
+"Don't let great be the enemy of good." I could probably spend another hour tinkering with this figure and maybe not have it any better.  I think that I'll leave it for the time being.  
