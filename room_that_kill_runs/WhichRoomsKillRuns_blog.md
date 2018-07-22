@@ -35,16 +35,28 @@ The reset count gives a clear indication of which room are most troublesome in s
 ### #1 - 3DF61
 
 ## By reset fraction
-### #10 - 4DG21
-### #9 - 1OF81
-### #8 - 1OG81
-### #7 - 5DE31
-### #6 - 9DE51
-### #5 - 3DD62
-### #4 - 4DH21
-### #3 - 3DF61
-### #2 - 5DF11 
-### #1 - 3DH51 
+### #10 - 4DG21 - Vire (before boss)
+Here Arcus must deafeat 5 Vires before moving on to the next room.  Coming into the room with a maximum of 4 hearts means the margin for error here is small.  Vires, once they are hit split into two red Keese meaning there are actually 15 enemies to defeat on this screen.  Arcus mitigates this using bombs, which are capable of killing Vires and the Keese they spawn.  This room resulted in a death/reset about 12% of the time or 105 times in the runs I examined.
+
+### #9 - 1OF81 - Screen wrap
+### #8 - 1OG81 - Screen wrap
+
+I'm count these rooms together since they are sequetial rooms and they really have the same root cause of failure, the screen wrap.  At a few points in the run, Arcus must perform a neat little trick calle the screen wrap which allows him to warp Link from the right edge of the screen to the left edge of the screen.  I'll fully admit I spent about 30 minutes trying to do this technique at home and was not successful once!  These room are the 2nd and 3rd rooms of the run.  So Arcus doesn't accept any failures here, if he misses a screen wrap here, he just resets the run.  There are some screen wraps later in the run where a failure to execute move is tolerated.  
+
+Individually, he's able to pull off the move about 87% of the time.  Which means that taken together these rooms kill about 1/4 runs, or 1054 runs total.  WOW!
+
+### #7 - 5DE31 - Digdogger (boss)
+The Digdogger is a fast moving boss that needs to be killed a particular way.  First the flute is used to transform the Digdogger into his second form.  Then Arcus uses bomb to damage the boss and finishes him off with the sword.  All the while he's being shot at by Stone Statues.  This room resulted in a death/reset about 14% of the time or 47 times in the runs I examined.
+
+### #6 - 9DE51 - Gannon (final boss)
+Gannon, the big boss.  I was happy to see that he made this list.  He's a tough boss and 15% of the time, Arcus would be defeated by him.  I mean that's actually pretty amazing that he's able to defeat him 85% of the time.
+
+### #5 - 3DD62 - Red Darknut 2 
+
+### #4 - 4DH21 - Geelok (boss)
+### #3 - 3DF61 - Red Darknut 1
+### #2 - 5DF11 - Blue Darknut 2
+### #1 - 3DH51 - Manhandla (boss)
 
 How does this compare to my previous results
 
