@@ -54,8 +54,11 @@ Gannon, the big boss.  I was happy to see that he made this list.  He's a tough 
 ### #5 - 3DD62 - Red Darknut 2 
 
 ### #4 - 4DH21 - Geelok (boss)
+
 ### #3 - 3DF61 - Red Darknut 1
-### #2 - 5DF11 - Blue Darknut 2
+5.4 seconds
+### #2 - 5DF11 - Blue Darknut 2 (aka the Olive Garden)
+8.2 seconds
 ### #1 - 3DH51 - Manhandla (boss)
 
 How does this compare to my previous results
