@@ -49,24 +49,31 @@ Individually, he's able to pull off the move about 87% of the time.  Which means
 The Digdogger is a fast moving boss that needs to be killed a particular way.  First the flute is used to transform the Digdogger into his second form.  Then Arcus uses bomb to damage the boss and finishes him off with the sword.  All the while he's being shot at by Stone Statues.  This room resulted in a death/reset about 14% of the time or 47 times in the runs I examined.
 
 ### #6 - 9DE51 - Gannon (final boss)
-Gannon, the big boss.  I was happy to see that he made this list.  He's a tough boss and 15% of the time, Arcus would be defeated by him.  I mean that's actually pretty amazing that he's able to defeat him 85% of the time.
+Gannon, the big boss.  I was happy to see that Gannon made this list.  He's a tough boss and 15% of the time, Arcus would be defeated by him.  I mean that's actually pretty amazing that he's able to defeat him 85% of the time.  It's probably a testament to all the work he has put into practicing these end-game rooms.
 
 ### #5 - 3DD62 - Red Darknut 2 
+In this room, Arcus faces off against 5 Darknuts.  He must kill the Darknuts before the lower door opens allowing him to advance. This is a formidible task as this is his first Dungeon of the game and he only has a maximum of 3 hearts here.  18% the time he enters this room his run ends here.  
+
+*note: he actually enters this room twice, the statistics quoted here only refer the the 2nd time he enters this room, and has to defeat the Darknuts*
 
 ### #4 - 4DH21 - Geelok (boss)
+The Geelok is a tough boss the kills Arcus runs 24% of the time.  This multi-headed boss gets more powerful as you damage it, with heads detaching from the main body and flying around to attack Link.  
 
 ### #3 - 3DF61 - Red Darknut 1
-5.4 seconds
-### #2 - 5DF11 - Blue Darknut 2 (aka the Olive Garden)
-8.2 seconds
-### #1 - 3DH51 - Manhandla (boss)
+25% - 5.4 seconds
 
+
+### #2 - 5DF11 - Blue Darknut 2 (aka the Olive Garden)
+30% 8.2 seconds
+### #1 - 3DH51 - Manhandla (boss)
+34% 
 How does this compare to my previous results
 
 Some biases
 - reseting runs based on time
 - 30-30 routes
 - reset at begining of overworld
+- zero kills rooms
 
 Some technical notes
 - scraper
