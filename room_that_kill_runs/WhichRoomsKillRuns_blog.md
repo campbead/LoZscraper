@@ -67,7 +67,12 @@ The Geelok is a tough boss the kills Arcus runs 24% of the time.  This multi-hea
 30% 8.2 seconds
 ### #1 - 3DH51 - Manhandla (boss)
 34% 
-How does this compare to my previous results
+
+## Some other questions
+Which rooms never kill runs?  Most of them! In my dataset, 134 of the 234 rooms I define never result in a death.  The big story here is how different dungeons are from the overworld.  61 of 141 (43%) of dungeon rooms had zero deaths.  In the overworld it's 71 out of 93 (76%) never resulted in death.  Of the 4479 runs that weren't completed, 3162 (70%) ended in a dungeon.  Only 1315 runs (30% of non-completed runs) ended in the overworld.  If we filter the first overworld push where resets are frequent due to missed screen wraps, then that number drops to 68 (2% of non-completed runs).  
+
+The takeaway here: Dungeons are hard. This is by far where most deaths/resets occur.
+
 
 Some biases
 - reseting runs based on time
