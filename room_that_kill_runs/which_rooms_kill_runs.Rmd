@@ -316,3 +316,17 @@ ggplot(rooms_ordered, aes(x=Room)) +
 ```
 
 "Don't let great be the enemy of good." I could probably spend another hour tinkering with this figure and maybe not have it any better.  I think that I'll leave it for the time being.  
+
+Now i have a quick question.  What % of rooms have 0 deaths?
+
+```{r}
+# rooms with 0 deaths
+rooms_ordered%>%
+  filter(kill_frac == 0) %>%
+  tally()
+
+#rooms total
+rooms_ordered %>%
+  tally()
+```
+132/234 rooms have 0 deaths, doesn't answer the question of how many have statistically 0 deaths.  But that's something I can look into another time.
