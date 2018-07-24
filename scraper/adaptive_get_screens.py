@@ -245,12 +245,14 @@ def get_run_number(time,video):
     success,image = vidcap.read()
     run_image = image[312:330,254:296]
     return get_number_text(run_image,'multi')
+
 def print_time_since_start(time, start_time):
     delta_time = time - start_time
     delta_time_sec = delta_time/1000
     mins = math.floor(delta_time_sec/60)
     secs = round(delta_time_sec - mins * 60)
     print(mins, ':', secs)
+
 def load_room_list(room_list_file):
     with open(room_list_file, newline='') as csvfile:
         spamreader = csv.reader(csvfile, delimiter=',')
@@ -659,16 +661,23 @@ def return_file_name_no_extension(full_path_filename):
     filename_no_ext = os.path.splitext(base)[0]
     return filename_no_ext
 
-
+def convert_room_list(room_list):
+    converted_room_list = []
+    for room in room_list:
+        converted_room = room[1:4]
+        convert_room_list.append(convert_room)
+    return convert_room_list
 
 wall_start_time = time.time()
 
 ap = argparse.ArgumentParser()
 ap.add_argument("-v", "--video", required=True,
     help="path to the video image")
+ap.add_argument("--room_list", required=False,
+    help="path to room list csv file, defaults to double hundo")
 ap.add_argument("--verbose", required=False,
     help="flag for more output", action="store_true")
-ap.add_argument("-t", "--start", required=True,
+ap.add_argument("-t", "--start", required=False,
     help="start time")
 ap.add_argument("-i", "--init", required=False,
     help="initialize table?", action="store_true")
@@ -685,6 +694,7 @@ ap.add_argument("-run", required=False,
 
 args = vars(ap.parse_args())
 video = args["video"]
+room_list_file = args["room_list"]
 verbose = args["verbose"]
 run_start_time = args["start"]
 delta_time = args["delta"]
@@ -695,7 +705,6 @@ run_number = args["run"]
 
 
 # run_end_time = args["end"]
-
 # end_time_array = []
 # end_time_array.append(run_end_time)
 # set DT_t to default value if not set
@@ -711,6 +720,9 @@ if run_number is not None:
 else:
     run_number = 1
 
+if start_time is None:
+    start_time = 1
+
 
 run_start_time = int(run_start_time)
 vidcap = cv2.VideoCapture(video)  
@@ -725,10 +737,13 @@ if nosave == False:
 else:
     con = False
 
-room_list_file = 'room_list_double_hundo.csv'
-room_list = load_room_list(room_list_file)
-unique_room_list_file = 'unique_room_list_double_hundo.csv'
+# load room list 
+if room_list_file is None:
+    room_list_file = '../data/unique_room_list_double_hundo.csv'
+room_list = convert_room_list(load_room_list(room_list_file))
 unique_room_list = load_room_list(unique_room_list_file)
+
+
 #start_time = run_start_time
 #screen = get_screen_at_time(start_time,vidcap)
 screen_list = []
