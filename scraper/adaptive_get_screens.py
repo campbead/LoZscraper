@@ -662,7 +662,7 @@ def convert_room_list(room_list):
     converted_room_list = []
     for room in room_list:
         converted_room = room[1:4]
-        convert_room_list.append(convert_room)
+        converted_room_list.append(converted_room)
     return convert_room_list
 
 wall_start_time = time.time()
@@ -738,7 +738,7 @@ else:
 if room_list_file is None:
     room_list_file = '../data/unique_room_list_double_hundo_with_index.csv'
 room_list = convert_room_list(load_room_list(room_list_file))
-unique_room_list = load_room_list(unique_room_list_file)
+unique_room_list = load_room_list(room_list_file)
 
 
 #start_time = run_start_time
