@@ -34,4 +34,5 @@ Output will be an sqlite database .db file of the samename as your video.
 
 ## Todo
 
-- [ ] Document `adaptive_get_screens.py`
+- [ ] Fully document `adaptive_get_screens.py`
+- [ ] Get end time working on code.
