@@ -13,17 +13,22 @@ Watching him, I thought it would be cool to collect some data on how his speed r
 
 I have started to blog about this on [Medium](https://medium.com/@campbead) which has more descriptive analysis.  
 
-## More information
+## Using the scraper
+The scraper `adaptive_get_screens.py` was really my first attempt doing a Python project and it's not a pretty thing, but it works.  I'm going to document how to use the scraper more fully later but it's not a big priority.  
 
+The scraper works on an .mp4 file downloaded from twitch, I used [Arne Vogel's Concat](https://github.com/ArneVogel/concat) but you're free to use whatever tool you like.  
 
-## Scraper 
+- "-v" or '--video'
 
 ## The data
+
+
 
 ## Workflow
 
 
 
 ## Todo
+
 - [ ] Document `adaptive_get_screens.py`
-- [ ] Link to you blog
+- [x] Link to you blog
