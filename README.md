@@ -36,3 +36,5 @@ Output will be an sqlite database .db file of the samename as your video.
 
 - [ ] Fully document `adaptive_get_screens.py`
 - [ ] Get end time working on code.
+- [ ] Have a default start time
+- [ ] Have 'room_list_double_hundo.csv' and unique_room_list_double_hundo.csv' be in same directory
