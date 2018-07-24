@@ -697,6 +697,7 @@ run_number = int(args["run"])
 # end_time_array = []
 # end_time_array.append(run_end_time)
 # set DT_t to default value if not set
+
 if delta_time is not None:
     DT_i = delta_time
 else:
@@ -704,7 +705,6 @@ else:
 
 run_start_time = int(run_start_time)
 vidcap = cv2.VideoCapture(video)  
-#run_start_time = 11000 # a start run
 
 filename = os.path.basename(video)
 data_file = os.path.splitext(filename)[0] + '.db'

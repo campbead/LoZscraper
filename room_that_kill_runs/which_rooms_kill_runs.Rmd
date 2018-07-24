@@ -316,3 +316,51 @@ ggplot(rooms_ordered, aes(x=Room)) +
 ```
 
 "Don't let great be the enemy of good." I could probably spend another hour tinkering with this figure and maybe not have it any better.  I think that I'll leave it for the time being.  
+
+Now i have a quick question.  What % of rooms have 0 deaths?
+
+```{r}
+# rooms with 0 deaths
+zero_death_rooms <- rooms_ordered%>%
+  filter(kill_frac == 0) %>%
+  tally()
+
+#rooms total
+total_rooms <- rooms_ordered %>%
+  tally()
+
+# room with 0 deaths in overworld
+zero_death_rooms_overworld <- rooms_ordered%>%
+  filter(kill_frac == 0) %>%
+  filter(substr(Room,2,2) == 'O') %>%
+  tally()
+
+# room with 0 deaths in dungeons
+zero_death_rooms_dungeon <- rooms_ordered%>%
+  filter(kill_frac == 0) %>%
+  filter(substr(Room,2,2) == 'D') %>%
+  tally()
+
+# total overworld rooms
+total_rooms_overworld <- rooms_ordered%>%
+  filter(substr(Room,2,2) == 'O') %>%
+  tally()
+
+# total dungeon rooms
+total_rooms_dungeon <- rooms_ordered%>%
+  filter(substr(Room,2,2) == 'D') %>%
+  tally()
+```
+132/234 rooms have 0 deaths, doesn't answer the question of how many have statistically 0 deaths.  But that's something I can look into another time. 61/141 dungeon rooms have 0 deaths, 71/93 overworld rooms have 0 deaths!  That's a big difference.
+
+Let's sum total overworld and dunegon deaths... just for fun ya know!
+```{r}
+total_deaths_overworld <- rooms_ordered %>%
+  filter(substr(Room,2,2) == 'O') %>%
+  summarise(sum(times_killed_run)) 
+
+total_deaths_dungeon <- rooms_ordered %>%
+  filter(substr(Room,2,2) == 'D') %>%
+  summarise(sum(times_killed_run)) 
+```
+
