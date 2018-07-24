@@ -258,11 +258,8 @@ def load_room_list(room_list_file):
         spamreader = csv.reader(csvfile, delimiter=',')
         room_list = []
         for row in spamreader:
-            room_list.append(row)
-        new_room_list = []
-        for row in room_list:
-            new_room_list.append(row[0])
-    return new_room_list
+            room_list.append(row[1])
+    return room_list
 
 def process_run(start_time, video, dT, run_number, master_room_list, unique_room_list, time_resolution,con):
     kill_room = 'XXX'
@@ -737,9 +734,9 @@ if nosave == False:
 else:
     con = False
 
-# load room list 
+# load room list, if a roomlist insn't provided, use 
 if room_list_file is None:
-    room_list_file = '../data/unique_room_list_double_hundo.csv'
+    room_list_file = '../data/unique_room_list_double_hundo_with_index.csv'
 room_list = convert_room_list(load_room_list(room_list_file))
 unique_room_list = load_room_list(unique_room_list_file)
 
