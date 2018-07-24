@@ -717,8 +717,8 @@ if run_number is not None:
 else:
     run_number = 1
 
-if start_time is None:
-    start_time = 1
+if run_start_time is None:
+    run_start_time = 1
 
 
 run_start_time = int(run_start_time)
@@ -734,7 +734,7 @@ if nosave == False:
 else:
     con = False
 
-# load room list, if a roomlist insn't provided, use 
+# load room list, if a roomlist insn't provided, use double hundo
 if room_list_file is None:
     room_list_file = '../data/unique_room_list_double_hundo_with_index.csv'
 room_list = convert_room_list(load_room_list(room_list_file))
