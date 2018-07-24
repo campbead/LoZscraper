@@ -691,17 +691,26 @@ delta_time = args["delta"]
 nosave = args["nosave"]
 initialize_table = args["init"]
 manual_mode = args["manual_mode"]
-run_number = int(args["run"])
+run_number = args["run"]
+
+
 # run_end_time = args["end"]
 
 # end_time_array = []
 # end_time_array.append(run_end_time)
 # set DT_t to default value if not set
 
+# set default values
 if delta_time is not None:
     DT_i = delta_time
 else:
     DT_i = 3000
+
+if run_number is not None:
+    run_number = int(run_number)
+else:
+    run_number = 1
+
 
 run_start_time = int(run_start_time)
 vidcap = cv2.VideoCapture(video)  
