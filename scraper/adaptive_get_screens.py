@@ -262,22 +262,30 @@ def load_room_list(room_list_file):
     return room_list
 
 def process_run(start_time, video, dT, run_number, master_room_list, unique_room_list, time_resolution,con):
+    
+    # some initializations 
     kill_room = 'XXX'
     kill_video = False
     frame_count = int(video.get(cv2.CAP_PROP_FRAME_COUNT)) #find_master_end_time(video)
     fps = video.get(cv2.CAP_PROP_FPS)
     
+    # there should not be two of these
     master_end_time = frame_count/fps *1000
-
     master_end_time = 18280000
-    if run_number is None:
-        run_number = 0
+
+    # set run number to one lower
     run_number_man = run_number -1 
+
+    # get the first screen
     screen = get_screen_at_time(start_time,video)
     print(screen)
+
+    # if the first screen isn't the start screen then go until you find it
     if screen != 'OH8':
         screen, known_time_in_room = find_start_screen(start_time, dT, video)
         print(screen,known_time_in_room)
+
+    # this is the main loop.  it runs until the kill_video signal is sent
     while kill_video == False:
 
         verbose_list = []#['8DE41','8DE31'] #['4OI31', '4OJ31'] #['9DE41', 'OH8']
@@ -696,16 +704,17 @@ verbose = args["verbose"]
 run_start_time = args["start"]
 delta_time = args["delta"]
 nosave = args["nosave"]
-initialize_table = args["init"]
 manual_mode = args["manual_mode"]
 run_number = args["run"]
+run_end_time = args["end"]
 
-
-# run_end_time = args["end"]
 # end_time_array = []
 # end_time_array.append(run_end_time)
 
 ## set default values
+
+# set this to be manually adjustable later
+time_resolution = 100 
 
 # set DT_i - the initial time interval for room scanning
 if delta_time is not None:
@@ -745,12 +754,13 @@ if room_list_file is None:
 unique_room_list = load_room_list(room_list_file)
 room_list = convert_room_list(unique_room_list)
 
-screen_list = []
-time_list = []
+
 
 if manual_mode == False:
     process_run(run_start_time, vidcap, DT_i, run_number, room_list, unique_room_list, 100,con)
 else:
+    screen_list = []
+    time_list = []
     start_time = float(run_start_time)
     screen = get_screen_at_time(start_time,vidcap)
     while start_time < run_end_time:
