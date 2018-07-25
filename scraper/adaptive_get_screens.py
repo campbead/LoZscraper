@@ -665,6 +665,8 @@ def convert_room_list(room_list):
         converted_room_list.append(converted_room)
     return converted_room_list
 
+
+# start clock for run timer
 wall_start_time = time.time()
 
 ap = argparse.ArgumentParser()
@@ -676,8 +678,6 @@ ap.add_argument("--verbose", required=False,
     help="flag for more output", action="store_true")
 ap.add_argument("-t", "--start", required=False,
     help="start time")
-ap.add_argument("-i", "--init", required=False,
-    help="initialize table?", action="store_true")
 ap.add_argument("-d", "--delta", required=False,
     help="delta time")
 ap.add_argument("-nosave", required=False,
@@ -704,30 +704,35 @@ run_number = args["run"]
 # run_end_time = args["end"]
 # end_time_array = []
 # end_time_array.append(run_end_time)
-# set DT_t to default value if not set
 
-# set default values
+## set default values
+
+# set DT_i - the initial time interval for room scanning
 if delta_time is not None:
     DT_i = delta_time
 else:
     DT_i = 3000
 
+# set run_number the run number of the first run
 if run_number is not None:
     run_number = int(run_number)
 else:
     run_number = 1
 
+# set run_start_time the time (ms) in the video to start the scraping
+# this works best if this is just before the start of the first run.
 if run_start_time is None:
     run_start_time = 1
-
-
 run_start_time = int(run_start_time)
+
+# load video
 vidcap = cv2.VideoCapture(video)  
 
+# create database file
 filename = os.path.basename(video)
 data_file = os.path.splitext(filename)[0] + '.db'
-
 if nosave == False:
+    initialize_table = not(os.path.exists(data_file)) 
     con = lite.connect(data_file)
     if initialize_table:
         init_table(con)
@@ -740,8 +745,6 @@ if room_list_file is None:
 unique_room_list = load_room_list(room_list_file)
 room_list = convert_room_list(unique_room_list)
 
-#start_time = run_start_time
-#screen = get_screen_at_time(start_time,vidcap)
 screen_list = []
 time_list = []
 
