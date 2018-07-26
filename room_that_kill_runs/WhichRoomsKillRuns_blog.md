@@ -60,25 +60,27 @@ In this room, Arcus faces off against 5 Darknuts.  He must kill the Darknuts bef
 The Geelok is a tough boss the kills Arcus runs 24% of the time.  This multi-headed boss gets more powerful as you damage it, with heads detaching from the main body and flying around to attack Link.  
 
 ### #3 - 3DF61 - Red Darknut 1
-25% - 5.4 seconds
-
+This is the first big test for Arcus in his speedrun.  In this room he has to quickly get a bomb move on to the next room.  If picks up an early bomb, he can move along early, otherwise he is forced to defeat all three for an early bomb drop.  25% of the time his run ends here.  As mentioned in my previous blog post, this room has big spread of times is takes to clear, 5.4 seconds difference between his median time and the top 10% of times.
 
 ### #2 - 5DF11 - Blue Darknut 2 (aka the Olive Garden)
-30% 8.2 seconds
+Of all the rooms that standout as troublesome while watching Arcus play, the Olive Garden stands out as being the most troublesome.  This room is brutal.  He has to defeat 6 Blue Darknuts here to move on to grab the flute (or Breadstick, if you're a fan of Arcus).  An enornmous 30% of runs end here and when he is able to complete this room, there is an 8.2 second spread between his median completion time and his 10% best times.  
+
 ### #1 - 3DH51 - Manhandla (boss)
-34% 
+This boss a tough one.  Arcus comes into this room with only 3 hearts max, so the margin for error is small.  A bad bomb placement here can kill the run.  Even if he does defeat the boss, if the total run time is too high here, he's likely to just reset the run himself.  The Manhandla room gets the best of 34% the rooms. 
 
 ## Some other questions
-Which rooms never kill runs?  Most of them! In my dataset, 134 of the 234 rooms I define never result in a death.  The big story here is how different dungeons are from the overworld.  61 of 141 (43%) of dungeon rooms had zero deaths.  In the overworld it's 71 out of 93 (76%) never resulted in death.  Of the 4479 runs that weren't completed, 3162 (70%) ended in a dungeon.  Only 1315 runs (30% of non-completed runs) ended in the overworld.  If we filter the first overworld push where resets are frequent due to missed screen wraps, then that number drops to 68 (2% of non-completed runs).  
+Which rooms never kill runs?  
+
+Most of them! In my dataset, 134 of the 234 rooms I define never result in a death.  The big story here is how different dungeons are from the overworld.  61 of 141 (43%) of dungeon rooms had zero deaths.  In the overworld it's 71 out of 93 (76%) never resulted in death.  Of the 4479 runs that weren't completed, 3162 (70%) ended in a dungeon.  Only 1315 runs (30% of non-completed runs) ended in the overworld.  If we filter the first overworld push where resets are frequent due to missed screen wraps, then that number drops to 68 (2% of non-completed runs).  
 
 The takeaway here: Dungeons are hard. This is by far where most deaths/resets occur.
+
 
 
 Some biases
 - reseting runs based on time
 - 30-30 routes
 - reset at begining of overworld
-- zero kills rooms
 
 Some technical notes
 - scraper
