@@ -13,7 +13,7 @@ At the time I was also deciding that I wanted to leave the academic world and tr
 
 A few things you should know about speedrunning before we get started.  The Legend of Zelda has different rooms (also called screens), that the player has to travel through to eventually win the game.  The Legend of Zelda is open in that the player is free to choose different paths to accomplish this goal.  In speedrunning however, predefined routes are used to beat the game is the shortest time possible.  
 
-I scraped data for 4581 of Arcus's runs.  Let's take a look at the rooms where those runs ended.
+Arcus mostly ran what he called the "Double Hundo" route, name for the two 100 rubie secret rooms you must visit on the route.  He did a lot of runs (9472) in this push but I only was able to dowload vides for the last 4581 of Arcus's runs.  Let's take a look at the rooms where those runs ended.
 
 INSERT FIGURE OF TIMES ENTERED VS ROOM
 
@@ -68,19 +68,11 @@ Of all the rooms that standout as troublesome while watching Arcus play, the Oli
 ### #1 - 3DH51 - Manhandla (boss)
 This boss a tough one.  Arcus comes into this room with only 3 hearts max, so the margin for error is small.  A bad bomb placement here can kill the run.  Even if he does defeat the boss, if the total run time is too high here, he's likely to just reset the run himself.  The Manhandla room gets the best of 34% the rooms. 
 
-## Some other questions
-Which rooms never kill runs?  
+## Which rooms never kill runs?  
 
 Most of them! In my dataset, 134 of the 234 rooms I define never result in a death.  The big story here is how different dungeons are from the overworld.  61 of 141 (43%) of dungeon rooms had zero deaths.  In the overworld it's 71 out of 93 (76%) never resulted in death.  Of the 4479 runs that weren't completed, 3162 (70%) ended in a dungeon.  Only 1315 runs (30% of non-completed runs) ended in the overworld.  If we filter the first overworld push where resets are frequent due to missed screen wraps, then that number drops to 68 (2% of non-completed runs).  
 
 The takeaway here: Dungeons are hard. This is by far where most deaths/resets occur.
-
-
-
-Some biases
-- reseting runs based on time
-- 30-30 routes
-- reset at begining of overworld
 
 Some technical notes
 - scraper
