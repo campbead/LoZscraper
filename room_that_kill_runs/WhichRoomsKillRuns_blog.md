@@ -1,7 +1,7 @@
 ###Legend of Zelda speedrunning-  Which rooms kill runs?
 This is the part 2 of my series on analyzing speedrunning of Legend of Zelda  (check out part 1: Legend of Zelda speedrunning - top 5 time wasting rooms)
 
-Back to the Legend of Zelda.  If you're like me you spent many hours as a kid playing this game.  The thing I remember about it at the time is that it was the first game I played with an open world.  I could choose how I wanted to go around the world and play the game.  This game wasn't like Super Mario Bros. Where you had to play the game in the order the game wanted you to (for the most part). In Legend of Zelda, you were free to choose, and I liked that.
+Back to the Legend of Zelda.  If you're like me you spent many hours as a kid playing this game.  I remember this game for being the first I played with an open world.  I could choose how I wanted to go around the world and play the game.  This game wasn't like Super Mario Bros. having me play the game in the order the game wanted me to. In Legend of Zelda, I was free to choose, and I liked that.
 
 ## The Project
 
