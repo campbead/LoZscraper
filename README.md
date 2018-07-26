@@ -25,7 +25,7 @@ The scraper works on an .mp4 file downloaded from twitch, I used [Arne Vogel's C
 - "-run" `-run=1345` this species the run number for the first run that begins after your start time.  
 
 ## The data
-Output will be an sqlite database .db file of the samename as your video.
+Output will be an sqlite database .db file of the same name as your video.
 
 
 ## Workflow
@@ -36,5 +36,4 @@ Output will be an sqlite database .db file of the samename as your video.
 
 - [ ] Fully document `adaptive_get_screens.py`
 - [ ] Get end time working on code.
-- [ ] Have a default start time
-- [ ] Have 'room_list_double_hundo.csv' and unique_room_list_double_hundo.csv' be in same directory
+- [ ] Migrate from tesseract to [opencv template matching](https://docs.opencv.org/2.4/doc/tutorials/imgproc/histograms/template_matching/template_matching.html) for recognition 
