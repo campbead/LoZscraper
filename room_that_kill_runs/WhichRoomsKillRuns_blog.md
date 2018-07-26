@@ -25,14 +25,8 @@ The picture above gives us a good sense how quickly most runs ended, but it make
 
 We're going to look at a simple question while examining my Arcus87 dataset, which rooms in the speedrun kill the most runs?  After exploring and becoming familiar with the data, I thought of two different ways to think about this question. First, I could count the run of times a run ended in particular room, I call this the **reset count**. Second I could calculate how likely the run is to end in that room, I call this the **reset fraction**.
 
-The reset count gives a clear indication of which room are most troublesome in shear numbers.  It is heavily weighted toward the begining of the run, as you can easily see in the above figure.  If the run gets off to a bad start, it's likely to be reset.  The reset fraction however, gives a better indication of the rooms overall difficulty of the room by showing us just how often that room killed a run.
+The reset count gives a clear indication of which room are most troublesome in shear numbers.  It is heavily weighted toward the begining of the run, as you can easily see in the above figure.  If the run gets off to a bad start, it's likely to be reset.  The reset fraction however, gives a better indication of the rooms overall difficulty of the room by showing us just how often that room killed a run.  It's for that reason that I'll use the **reset fraction** as my metric for evaluating which rooms kill runs the most often.
 
-## By reset count
-### #5 - 3DD62
-### #4 - 1OF81
-### #3 - 1OG81
-### #2 - 3DH51
-### #1 - 3DF61
 
 ## By reset fraction
 ### #10 - 4DG21 - Vire (before boss)
@@ -71,9 +65,8 @@ This boss a tough one.  Arcus comes into this room with only 3 hearts max, so th
 ## Which rooms never kill runs?  
 
 Most of them! In my dataset, 134 of the 234 rooms I define never result in a death.  The big story here is how different dungeons are from the overworld.  61 of 141 (43%) of dungeon rooms had zero deaths.  In the overworld it's 71 out of 93 (76%) never resulted in death.  Of the 4479 runs that weren't completed, 3162 (70%) ended in a dungeon.  Only 1315 runs (30% of non-completed runs) ended in the overworld.  If we filter the first overworld push where resets are frequent due to missed screen wraps, then that number drops to 68 (2% of non-completed runs).  
-
 The takeaway here: Dungeons are hard. This is by far where most deaths/resets occur.
 
-Some technical notes
-- scraper
-- room counting caveats: rooms can be entered more than once, and there are different routes.
+## A Bit About the Data
+
+I have developed a python script that scrapes Twitch VODs for Legend of Zelda, determining the time spent in each room, hearts, rubies, and bombs. I scraped data from over 4000 runs. My goal is explore this dataset using a variety of statistical tools.  My python script and documentation is still very much a work in progress, but feel free to have a look at it on [my Github](https://github.com/campbead/LoZscraper).
