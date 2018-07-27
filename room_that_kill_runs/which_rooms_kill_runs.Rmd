@@ -12,7 +12,7 @@ library(grid)
 library(gridExtra)
 
 room_data <- read.csv("../data/fixed_room_data.csv")
-room_order <- read.csv("../data/unique_room_list_double_hundo_fixed_with_index.csv", header = FALSE, col.names = c('Number','Room'))
+room_order <- read.csv("../data/unique_room_list_double_hundo_with_index.csv", header = FALSE, col.names = c('Number','Room'))
 ```
 
 
