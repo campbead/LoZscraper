@@ -82,6 +82,7 @@ def get_number_text(image_selection,flag):
         text = pytesseract.image_to_string(Image.open(filename), lang = 'eng', config='-psm 10 -c tessedit_char_whitelist=X0123456789')
     os.remove(filename)
     return text
+
 def write_results(con,screen_data):
     with con:
         cur = con.cursor() 
@@ -240,6 +241,7 @@ def get_screen_at_time(time,vidcap):
 def remove_blank_screens(screen_list):
 
     return [screen for screen in screen_list if 'X' not in screen]
+
 def get_run_number(time,video):
     vidcap.set(cv2.CAP_PROP_POS_MSEC,time)
     success,image = vidcap.read()
@@ -261,12 +263,15 @@ def load_room_list(room_list_file):
             room_list.append(row[1])
     return room_list
 
-def process_run(start_time, video, dT, run_number, master_room_list, unique_room_list, time_resolution,con):
+def process_run(start_time, video, dT, run_number, master_room_list, 
+                unique_room_list, time_resolution, con):
     
     # some initializations 
     kill_room = 'XXX'
     kill_video = False
-    frame_count = int(video.get(cv2.CAP_PROP_FRAME_COUNT)) #find_master_end_time(video)
+    
+    # calculate end time of video
+    frame_count = int(video.get(cv2.CAP_PROP_FRAME_COUNT))
     fps = video.get(cv2.CAP_PROP_FPS)
     
     # there should not be two of these
@@ -286,6 +291,8 @@ def process_run(start_time, video, dT, run_number, master_room_list, unique_room
         print(screen,known_time_in_room)
 
     # this is the main loop.  it runs until the kill_video signal is sent
+    # this loop should run once per run
+    
     while kill_video == False:
 
         verbose_list = []#['8DE41','8DE31'] #['4OI31', '4OJ31'] #['9DE41', 'OH8']
@@ -296,14 +303,18 @@ def process_run(start_time, video, dT, run_number, master_room_list, unique_room
         room_ind = 0
         next_room_in = master_room_list[1]
 
-        # get run number
+        # get run number using tesseract
         run_number = get_run_number(known_time_in_room,video)
         print('Run: ', run_number)
-        # run some check that that run isn't reset on room 0
-
+        
+        # run a loop until the next room is a start room or kill room
         while next_room_in != master_room_list[0] and next_room_in != kill_room :
             if room_ind == 0:
-                current_room_time = find_start_time_room(video, current_room, known_time_in_room, dT, time_resolution)
+                # if you're in the start room, get the start time, adjust the 
+                # run number and print the run number
+                current_room_time = find_start_time_room(
+                        video, current_room, known_time_in_room, dT, 
+                        time_resolution)
                 time = current_room_time
                 run_number_man = run_number_man + 1
                 print('man run:', run_number_man)
@@ -739,6 +750,7 @@ vidcap = cv2.VideoCapture(video)
 
 # create database file
 filename = os.path.basename(video)
+# TO DO -> check if file exists
 data_file = os.path.splitext(filename)[0] + '.db'
 if nosave == False:
     initialize_table = not(os.path.exists(data_file)) 
@@ -757,7 +769,9 @@ room_list = convert_room_list(unique_room_list)
 
 
 if manual_mode == False:
-    process_run(run_start_time, vidcap, DT_i, run_number, room_list, unique_room_list, 100,con)
+    # run the normal adaptive run.
+    process_run(run_start_time, vidcap, DT_i, run_number, room_list, 
+                unique_room_list, time_resolution, con)
 else:
     screen_list = []
     time_list = []
