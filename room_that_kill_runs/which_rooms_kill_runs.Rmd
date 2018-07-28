@@ -12,7 +12,7 @@ library(grid)
 library(gridExtra)
 
 room_data <- read.csv("../data/fixed_room_data.csv")
-room_order <- read.csv("../data/unique_room_list_double_hundo_fixed_with_index.csv", header = FALSE, col.names = c('Number','Room'))
+room_order <- read.csv("../data/unique_room_list_double_hundo_with_index.csv", header = FALSE, col.names = c('Number','Room'))
 ```
 
 
@@ -228,7 +228,7 @@ upper_plot <- ggplot(rooms_ordered, aes(y=times_killed_run,x=Room)) +
   scale_x_discrete(breaks=dungeon_rooms, labels=dungeon_display) +
   theme_minimal() + 
   #theme(axis.text.x = element_text(angle = 65, hjust =1)) + 
-  ylab('fraction times room killed current run') + 
+  ylab('reset count') + 
   #coord_cartesian(ylim = c(0,0.4)) + 
   xlab('Position in run')
 
@@ -239,7 +239,7 @@ lower_plot <- ggplot(rooms_ordered, aes(y=kill_frac,x=Room)) +
   scale_x_discrete(breaks=dungeon_rooms, labels=dungeon_display) +
   theme_minimal() + 
   #theme(axis.text.x = element_text(angle = 65, hjust =1)) + 
-  ylab('fraction times room killed current run') + 
+  ylab('reset fraction') + 
   coord_cartesian(ylim = c(0,0.4)) + 
   xlab('Position in run')
 
@@ -313,6 +313,8 @@ ggplot(rooms_ordered, aes(x=Room)) +
   #coord_cartesian(ylim = c(0,1.0)) + 
   xlab('position in run (D = dungeon , O = overworld)') +
   theme(panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank())
+
+ggsave('test.png', device = 'png', dpi = 320)
 ```
 
 "Don't let great be the enemy of good." I could probably spend another hour tinkering with this figure and maybe not have it any better.  I think that I'll leave it for the time being.  
