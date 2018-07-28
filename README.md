@@ -36,4 +36,8 @@ Output will be an sqlite database .db file of the same name as your video.
 
 - [ ] Fully document `adaptive_get_screens.py`
 - [ ] Get end time working on code.
+- [ ] Figure out if Run ends on Room 1
+- [ ] Check if video file exists
+- [ ] Clean up your process run function
+- [ ] Read up on proper nesting of functions
 - [ ] Migrate from tesseract to [opencv template matching](https://docs.opencv.org/2.4/doc/tutorials/imgproc/histograms/template_matching/template_matching.html) for recognition 
