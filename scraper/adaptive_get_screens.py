@@ -318,36 +318,70 @@ def process_run(start_time, video, dT, run_number, master_room_list,
                 time = current_room_time
                 run_number_man = run_number_man + 1
                 print('man run:', run_number_man)
+                
             else:
+                # if you aren't in the first room, do the normal stuff
+                
+                # room_A, room_B, time_A, and time_B are trackers
+                # at this point, we know the r
                 room_A = [master_room_list[room_ind-1]]
                 room_B = master_room_list[room_ind]
                 time_A = [max_time_previous]
                 time_B = [known_time_in_room]
                 run_count = 0 
+                # this is a special debug mode and can be removed
                 if any(unique_room_list[room_ind] in room for room in verbose_list):
                     print('UNIQUE ID:',unique_room_list[room_ind])
                     print('RoomA:', room_A, 'RoomB:', room_B)
                     print('TimeA:', time_A, 'TimeB:', time_B)
-                current_room_time, time = find_start_time_room_2(video, room_A, room_B, time_A, time_B, time_resolution, run_count)
-            print('room:',current_room,' time:',current_room_time, 'roomID:' ,unique_room_list[room_ind])
+                
+                # this the the code that finds the start time of the room
+                current_room_time, time = \
+                find_start_time_room_2(video, room_A, room_B, time_A, time_B, 
+                                       time_resolution, run_count)
+            
+            # print room info
+            print('room:',current_room,' time:',current_room_time, 'roomID:',
+                  unique_room_list[room_ind])
+            
+            #append the start time of the current room to the run_time_list
             run_time_list.append(current_room_time)
+            
+            # increase our room number
             room_ind = room_ind + 1
+            
+            # get the next room in our list and make the room selection list
             next_room_in = master_room_list[room_ind]
             rooms_list_selection = master_room_list[room_ind-1:room_ind+3]
             time_previous = [time]
             time_future =[]
+            
+            # This is a special mode for debuging and can probably be cut
             if any(unique_room_list[room_ind] in room for room in verbose_list):
                 verbose_mode = True
             else:
                 verbose_mode = False
+                
+            # set an internal count to 0     
             count = 0
-            next_room_out, known_time_in_room, max_time_previous = find_time_next_room_2(video,time_previous, time_future, dT, rooms_list_selection, master_end_time, time_resolution, verbose_mode, count)  
-            if any(unique_room_list[room_ind] in room for room in verbose_list):
+            
+            # this is your search function of the next room, your looking for
+            # the next room, any time in that room, and the next time in the 
+            # current room
+            next_room_out, known_time_in_room, max_time_previous = \
+            find_time_next_room_2(video,time_previous, time_future, dT, 
+                                  rooms_list_selection, master_end_time, 
+                                  time_resolution, verbose_mode, count)  
+            
+            # this is stuff related to a debug mode and can probably be removed
+            if any(unique_room_list[room_ind] \
+                   in room for room in verbose_list):
                 print('next_room_out:',next_room_out)
                 print('next_room_in:', next_room_in)
                 print('known_time_in_room:', known_time_in_room)
                 print('max_time_previous:', max_time_previous)
-            #next_room_out, known_time_in_room, max_time_previous = find_time_next_room(video,known_time_in_room,dT,rooms_list_selection,master_end_time)
+            
+            # check if the next room entered is the next on your master list
             if next_room_in == next_room_out:
                 run_room_list.append(next_room_in)
                 current_room = next_room_in
@@ -358,22 +392,21 @@ def process_run(start_time, video, dT, run_number, master_room_list,
         keys_list = []
         bomb_list = []
         rubies_list = []
-        #independent_time_list =[]
-        #level_list = []
         full_hearts_list =[]
         total_hearts_list =[]
+        
         print('run complete: getting room info')
         for time in run_time_list:
+            # grab all the other info using a .8 s offset to give the room a 
+            # load time
             output = get_other_info(time+800,video)
             full_hearts_list.append(output[0])
             total_hearts_list.append(output[1])
-            #level_list.append(output[2])
             rubies_list.append(output[2])
             keys_list.append(output[3])
             bomb_list.append(output[4])
-            #independent_time_list.append(output[6])
+       
         # save data to a sql
-
         if con != False:
             print('saving run')
             for index in range(0,len(run_time_list)):
@@ -389,17 +422,8 @@ def process_run(start_time, video, dT, run_number, master_room_list,
                 screen_data.append(bomb_list[index])
                 write_results(con,screen_data)
             print('save complete')    
-        # TESTING MODE
-        #print(run_time_list)
-        #print(run_room_list)
-        #print(full_hearts_list)
-        #print(total_hearts_list)
-        #print(level_list)
-        #print(rubies_list)
-        #print(keys_list)
-        #print(bomb_list)
-        #print(independent_time_list)
 
+        # check for kill room
         if next_room_in == kill_room:
             kill_video = True
         else:
