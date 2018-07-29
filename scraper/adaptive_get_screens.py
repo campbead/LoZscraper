@@ -21,14 +21,12 @@ def get_other_info(time,video):
     key_image = image[112:134,722:751]
     bomb_image = image[133:156,722:751]
     full_hearts, total_hearts = get_num_hearts(image)
-    #level = get_number_text(level_image,'single')
     rubies = get_number_text(rubie_image,'multi')
     keys = get_number_text(key_image,'single')
     bombs = get_number_text(bomb_image,'single')
-    #time_independent = get_number_text(time_image,'multi')
-    #output = [full_hearts, total_hearts, level, rubies, keys, bombs, time_independent]
     output = [full_hearts, total_hearts, rubies, keys, bombs]
     return output
+
 def get_num_hearts(image):
     # definitions:
     lower_full = np.array([0, 15, 70])
@@ -70,6 +68,7 @@ def get_num_hearts(image):
         if cv2.contourArea(c) >= half_heart_area_lower and cv2.contourArea(c) <= half_heart_area_upper:
             empty_hearts = empty_hearts + 0.5 
     return full_hearts, empty_hearts+full_hearts
+
 def get_number_text(image_selection,flag):
     gray = cv2.cvtColor(image_selection, cv2.COLOR_BGR2GRAY)
     filename = "{}.png".format(os.getpid())
@@ -87,11 +86,13 @@ def write_results(con,screen_data):
     with con:
         cur = con.cursor() 
         cur.execute("INSERT INTO Screen VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)", screen_data)
+        
 def init_table(con):
     with con:
         cur = con.cursor() 
         cur.execute("DROP TABLE IF EXISTS Screen")
         cur.execute("CREATE TABLE Screen(Run TEXT, Run_Man INT, Abs_time REAL, Room TEXT, Full_hearts REAL, Total_hearts INT, Rubies TEXT, Keys TEXT, Bombs TEXT)")
+
 def find_next_screen(begin_screen, begin_time, delta_t, vidcap):
     initial_screen = True
     time = begin_time
@@ -103,6 +104,7 @@ def find_next_screen(begin_screen, begin_time, delta_t, vidcap):
     upper_bound_time = time
     end_screen = screen
     return end_screen, upper_bound_time
+
 def find_start_screen(begin_time, delta_t, vidcap):
     not_start = True
     time = begin_time
@@ -114,6 +116,7 @@ def find_start_screen(begin_time, delta_t, vidcap):
     upper_bound_time = time
     end_screen = screen
     return end_screen, upper_bound_time
+
 def find_time_room_switch(begin_screen, end_screen, begin_time, end_time, time_resolution,vidcap):
     time = (begin_time + end_time)/2
     new_screen = get_screen_at_time(time,vidcap)
@@ -125,6 +128,7 @@ def find_time_room_switch(begin_screen, end_screen, begin_time, end_time, time_r
             return time, new_screen
         else:
             return find_time_room_switch(begin_screen, new_screen, begin_time, time, time_resolution,vidcap)
+        
 def get_screen_at_time(time,vidcap):
     def in_overworld(image):
         gray_cut = 50 # cutoff for overworld gray
@@ -238,6 +242,7 @@ def get_screen_at_time(time,vidcap):
                 Y_L = '0'    
             screen = 'D' + X_L + Y_L
             return screen 
+        
 def remove_blank_screens(screen_list):
 
     return [screen for screen in screen_list if 'X' not in screen]
@@ -453,12 +458,8 @@ def find_start_time_room(video, current_room, known_time_in_room, dT, time_resol
         else:
             dT = dT/2
             return find_start_time_room(video, current_room, known_time_in_room, dT,time_resolution)
+
 def find_start_time_room_2(video, room_A, room_B, time_A, time_B, time_resolution, run_count):
-    #if room_A 
-    #print(room_A)
-    #print(room_B)
-    #print(time_A)
-    #print(time_B)
     run_count = run_count +1
     if any(room_B in room for room in room_A):
         print('ROOMS ARE SAME - BAD')
@@ -539,6 +540,7 @@ def find_start_time_room_2(video, room_A, room_B, time_A, time_B, time_resolutio
             #         time_resolution_adapt = time_resolution_adapt + time_resolution
             #     else:
             #         return find_start_time_room_2(video,room_A,room_b, time_A, time_B,time_resolution)
+
 def find_time_next_room_2(video,time_previous, time_future,dT,rooms_list_selection,master_end_time, time_resolution, verbose_mode, count):
     # init code
 
@@ -657,6 +659,7 @@ def find_time_next_room_2(video,time_previous, time_future,dT,rooms_list_selecti
         else:    
             time_previous.append(time)
             return find_time_next_room_2(video,time_previous, time_future,dT,rooms_list_selection,master_end_time, time_resolution, verbose_mode, count)
+
 def find_time_next_room(video,known_time_in_room,dT,rooms_list_selection,master_end_time):
     current_room = rooms_list_selection[0]
     time = known_time_in_room
