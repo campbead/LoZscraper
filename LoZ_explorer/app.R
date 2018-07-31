@@ -54,18 +54,29 @@ server <- function(input, output) {
       na.omit() 
     })
     # create your super cool label
-    #the_label = paste("Duration of", input ,"(seconds)")
+    the_label <- reactive ({ 
+      paste("Duration of", input$room ,"(seconds)")
+    })
     
+    # pick the color based on overworld or dungeon
+    bar_color <- reactive({
+      if (substr(input$room, start = 2, stop = 2) == 'O') {
+        'green4'
+      } else {
+        'navyblue'  
+        }
+      
+    })
     
     # make your gg plot
     output$roomHist <- renderPlot({
       
       ggplot(durations_for_rooms(), aes(x = Duration) ) + 
-      geom_histogram(binwidth = 0.1,
-                     fill = 'red',
+      geom_histogram(binwidth = 0.2,
+                     fill = bar_color(),
                      position="identity",
-                     alpha= 0.4)
-     # xlab(the_label)
+                     alpha= 0.4) + 
+                     xlab(the_label())
     })
 }
 
