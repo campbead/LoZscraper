@@ -39,7 +39,7 @@ ui <- fluidPage(
       
       # Show a plot of the generated distribution
       mainPanel(
-         plotOutput("roomHist")
+        plotOutput("roomHist")
       )
    )
 )
@@ -48,24 +48,24 @@ ui <- fluidPage(
 server <- function(input, output) {
    
     # filter out the data you need
-    durations_for_rooms <- room_data %>%
+    durations_for_rooms <- reactive({ 
+      room_data %>%
       filter(Room == input$room) %>%
       na.omit() 
-    
+    })
     # create your super cool label
     #the_label = paste("Duration of", input ,"(seconds)")
     
     
     # make your gg plot
-    output$roomHist <- reactivePlot({
+    output$roomHist <- renderPlot({
       
-      p<-ggplot(durations_for_rooms, aes(x = Duration) ) + 
+      ggplot(durations_for_rooms(), aes(x = Duration) ) + 
       geom_histogram(binwidth = 0.1,
                      fill = 'red',
                      position="identity",
                      alpha= 0.4)
      # xlab(the_label)
-      print(p)
     })
 }
 
