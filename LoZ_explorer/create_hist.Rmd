@@ -5,13 +5,42 @@ output: html_notebook
 
 So what you want to do here is make a function the given a room number will output a histogram of durations of rooms.  This objective may change but lets look at bins, etc before making up my mind here.
 
+first thing, lets load data and some packages
+
 ```{r}
-plot(cars)
+library(dplyr)
+library(ggplot2)
+library(grid)
+library(gridExtra)
+
+room_data <- read.csv("../data/fixed_room_data.csv")
+room_order <- read.csv("../data/unique_room_list_double_hundo_with_index.csv", header = FALSE, col.names = c('Number','Room'))
 ```
 
-Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+```{r}
+create_hist <- function(RoomNumber) {
+  # filter out the data you need
+  durations_for_rooms <- room_data %>%
+    filter(Room == RoomNumber) %>%
+    na.omit() 
+  
+  # create your super cool label
+  the_label = paste("Duration of", RoomNumber ,"(seconds)")
+  
+  
+  # make your gg plot
+  ggplot(durations_for_rooms, aes(x = Duration) ) + 
+    geom_histogram(binwidth = 0.1,
+                 fill = 'red',
+                 position="identity",
+                 alpha= 0.4) +
+    xlab(the_label)
+}
 
-When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
+# call the function
+create_hist('3DF71')
+```
 
-The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+So I think the "agile" thing to do here is to put this in a shiny app with a dropdown menu of the rooms.  It would be pretty cool.
 
+I think this is a great template to start from `http://shiny.rstudio.com/gallery/telephones-by-region.html`
