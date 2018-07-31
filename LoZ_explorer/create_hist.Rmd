@@ -44,3 +44,9 @@ create_hist('3DF71')
 So I think the "agile" thing to do here is to put this in a shiny app with a dropdown menu of the rooms.  It would be pretty cool.
 
 I think this is a great template to start from `http://shiny.rstudio.com/gallery/telephones-by-region.html`
+
+We need a unique list of room
+```{r}
+room_list <- unique(room_data$Room)
+```
+

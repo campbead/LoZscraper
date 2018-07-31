@@ -9,25 +9,37 @@
 
 library(shiny)
 
+library(dplyr)
+library(ggplot2)
+library(grid)
+library(gridExtra)
+
+room_data <- read.csv("../data/fixed_room_data.csv")
+room_order <- read.csv("../data/unique_room_list_double_hundo_with_index.csv", header = FALSE, col.names = c('Number','Room'))
+
+room_list <- unique(room_data$Room)
+
 # Define UI for application that draws a histogram
 ui <- fluidPage(
    
    # Application title
-   titlePanel("Old Faithful Geyser Data"),
+   titlePanel("Room histogram"),
    
    # Sidebar with a slider input for number of bins 
    sidebarLayout(
-      sidebarPanel(
-         sliderInput("bins",
-                     "Number of bins:",
-                     min = 1,
-                     max = 100,
-                     value = 30)
+      
+     
+     
+     sidebarPanel(
+       selectInput("room", "Room:", 
+                   choices=room_list),
+       hr(),
+       helpText("Help text?")
       ),
       
       # Show a plot of the generated distribution
       mainPanel(
-         plotOutput("distPlot")
+         plotOutput("roomHist")
       )
    )
 )
@@ -35,14 +47,26 @@ ui <- fluidPage(
 # Define server logic required to draw a histogram
 server <- function(input, output) {
    
-   output$distPlot <- renderPlot({
-      # generate bins based on input$bins from ui.R
-      x    <- faithful[, 2] 
-      bins <- seq(min(x), max(x), length.out = input$bins + 1)
+    # filter out the data you need
+    durations_for_rooms <- room_data %>%
+      filter(Room == input$room) %>%
+      na.omit() 
+    
+    # create your super cool label
+    #the_label = paste("Duration of", input ,"(seconds)")
+    
+    
+    # make your gg plot
+    output$roomHist <- reactivePlot({
       
-      # draw the histogram with the specified number of bins
-      hist(x, breaks = bins, col = 'darkgray', border = 'white')
-   })
+      p<-ggplot(durations_for_rooms, aes(x = Duration) ) + 
+      geom_histogram(binwidth = 0.1,
+                     fill = 'red',
+                     position="identity",
+                     alpha= 0.4)
+     # xlab(the_label)
+      print(p)
+    })
 }
 
 # Run the application 
