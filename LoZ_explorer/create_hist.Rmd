@@ -1,0 +1,17 @@
+---
+title: "Create_histogram_of_Durations"
+output: html_notebook
+---
+
+So what you want to do here is make a function the given a room number will output a histogram of durations of rooms.  This objective may change but lets look at bins, etc before making up my mind here.
+
+```{r}
+plot(cars)
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+
