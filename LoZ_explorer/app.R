@@ -31,11 +31,15 @@ ui <- fluidPage(
       selectInput("room", "Room:", 
                   choices=room_list),
         hr(),
-        helpText("Pick a room")
+        #helpText("Pick a room"),
+      sliderInput('bin_size', 'Bin size (s):', 
+                  min = 0.1, max = 1, step = 0.1, value = 0.5
+      )
       ),
+
     # Show a plot of the generated distribution
     mainPanel(
-      tableOutput("myStats"),
+      
       plotOutput("roomHist")
     )
     
@@ -50,6 +54,7 @@ server <- function(input, output) {
     durations_for_rooms <- reactive({ 
       room_data %>%
       filter(Room == input$room) %>%
+      select(Duration) %>%
       na.omit() 
     })
     # create your super cool label
@@ -67,17 +72,13 @@ server <- function(input, output) {
       
     })
     
-    # test print output
-    output$myStats <- renderPrint({
-     durations_for_rooms() %>%
-        summarise(median = median(Duration))
-    })
+  
     
     # make your gg plot
     output$roomHist <- renderPlot({
       
       ggplot(durations_for_rooms(), aes(x = Duration) ) + 
-      geom_histogram(binwidth = 1,
+      geom_histogram(binwidth = input$bin_size,
                      fill = bar_color(),
                      position="identity",
                      alpha= 0.8) + 
