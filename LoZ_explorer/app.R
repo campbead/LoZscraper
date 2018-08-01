@@ -39,7 +39,9 @@ ui <- fluidPage(
       
       # Show a plot of the generated distribution
       mainPanel(
+        tableOutput("myStats"),
         plotOutput("roomHist")
+        
       )
    )
 )
@@ -68,14 +70,20 @@ server <- function(input, output) {
       
     })
     
+    # test print output
+    output$myStats <- renderPrint({
+     durations_for_rooms() %>%
+        summarise(median = median(Duration))
+    })
+    
     # make your gg plot
     output$roomHist <- renderPlot({
       
       ggplot(durations_for_rooms(), aes(x = Duration) ) + 
-      geom_histogram(binwidth = 0.2,
+      geom_histogram(binwidth = 0.4,
                      fill = bar_color(),
                      position="identity",
-                     alpha= 0.4) + 
+                     alpha= 0.8) + 
                      xlab(the_label())
     })
 }
