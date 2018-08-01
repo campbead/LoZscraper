@@ -22,28 +22,25 @@ room_list <- unique(room_data$Room)
 # Define UI for application that draws a histogram
 ui <- fluidPage(
    
-   # Application title
-   titlePanel("Room histogram"),
+  # Application title
+  titlePanel("Room histogram"),
    
-   # Sidebar with a slider input for number of bins 
-   sidebarLayout(
-      
-     
-     
-     sidebarPanel(
-       selectInput("room", "Room:", 
-                   choices=room_list),
-       hr(),
-       helpText("Help text?")
+  # Sidebar with a slider input for number of bins 
+  sidebarLayout(
+    sidebarPanel(
+      selectInput("room", "Room:", 
+                  choices=room_list),
+        hr(),
+        helpText("Pick a room")
       ),
-      
-      # Show a plot of the generated distribution
-      mainPanel(
-        tableOutput("myStats"),
-        plotOutput("roomHist")
-        
-      )
-   )
+    # Show a plot of the generated distribution
+    mainPanel(
+      tableOutput("myStats"),
+      plotOutput("roomHist")
+    )
+    
+  )
+    
 )
 
 # Define server logic required to draw a histogram
@@ -80,7 +77,7 @@ server <- function(input, output) {
     output$roomHist <- renderPlot({
       
       ggplot(durations_for_rooms(), aes(x = Duration) ) + 
-      geom_histogram(binwidth = 0.4,
+      geom_histogram(binwidth = 1,
                      fill = bar_color(),
                      position="identity",
                      alpha= 0.8) + 
