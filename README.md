@@ -23,22 +23,24 @@ The scraper works on an .mp4 file downloaded from twitch, I used [Arne Vogel's C
 - "--verbose" gives more output
 - "-t" or "--start" `-t=1000` time in the video to start scraping given in milliseconds 
 - "-run" `-run=1345` this species the run number for the first run that begins after your start time 
+- "-d" of "--delta" time in milliseconds for advance when initially checking for next room, defaults to 3000
 
 ## The data
 Output will be an sqlite database .db file of the same name as your video.
 
-
 ## Workflow
 
 
-
 ## Todo
-
-- [ ] Fully document `scrapeLOZ.py`
-- [ ] Get end time working on code.
-- [ ] Figure out if Run ends on Room 1
+- [ ] Fully document `scrapeLOZ.py`, including function documentation
 - [ ] Check if video file exists
-- [ ] Clean up your process run function
-- [ ] Read up on proper nesting of functions and function documentation
+- [ ] Remember that perfect is the enemy of good
+
+## Planned Features
+- [ ] Check to see if video file exists
+- [ ] Check if Run ends on Room 1
+- [ ] Specify an end time to stop scraping
+- [ ] Manual mode for scraping, will not need a room list.
+- [ ] No save / continuation feature
+- [ ] Adjustable time precision, currently a precision of 0.1 s is used for changes
 - [ ] Migrate from tesseract to [opencv template matching](https://docs.opencv.org/2.4/doc/tutorials/imgproc/histograms/template_matching/template_matching.html) for recognition 
-- [ ] Remember that perfect is the enemy of good.
