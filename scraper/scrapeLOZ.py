@@ -660,4 +660,4 @@ process_run(run_start_time, vidcap, DT_i, run_number, room_list,
 
 wall_end_time = time.time()
 elapsed = wall_end_time - wall_start_time
-print(elapsed)
+print('elapsed processing time: ', elapsed)
