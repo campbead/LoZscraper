@@ -19,10 +19,10 @@ The scraper `adaptive_get_screens.py` was really my first attempt doing a Python
 The scraper works on an .mp4 file downloaded from twitch, I used [Arne Vogel's Concat](https://github.com/ArneVogel/concat) but you're free to use whatever tool you like.  
 
 - "-v" or "--video" `-v='video2scrape.mp4` **required** this specifies the file to scrape
+- "--room_list" `--room_list='roomlist.csv'` this specifies the room list to use while scraping, if none is specified this will default to '../data/unique_room_list_double_hundo_with_index.csv' 
 - "--verbose" gives more output
-- "-t" or "--start" `-t=1000` **required** time in the video to start scraping given in milliseconds
-- "-end" `-end=100000` time is the video to stop scraping, if not specified, the scraper will run until the end of the file.  
-- "-run" `-run=1345` this species the run number for the first run that begins after your start time.  
+- "-t" or "--start" `-t=1000` time in the video to start scraping given in milliseconds 
+- "-run" `-run=1345` this species the run number for the first run that begins after your start time 
 
 ## The data
 Output will be an sqlite database .db file of the same name as your video.
