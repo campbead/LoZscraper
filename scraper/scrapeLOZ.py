@@ -402,13 +402,11 @@ def process_run(start_time, video, dT, run_number, master_room_list,
 def find_start_time_room(video, current_room, known_time_in_room, dT, time_resolution):
     time = (known_time_in_room + known_time_in_room-dT)/2
     new_screen = get_screen_at_time(time,video)
-    #print(time)
     if new_screen == current_room:
         dT = dT/2
         known_time_in_room = time
         if dT < 100:
             dT = 100
-        #print(current_room)
         # if the middle time is the begining screen, search the later half
         return find_start_time_room(video, current_room, known_time_in_room, dT,time_resolution)
     else:
@@ -441,7 +439,6 @@ def find_start_time_room_2(video, room_A, room_B, time_A, time_B, time_resolutio
             # room then add
 
             # are we <= TS away from room_A
-            #print('***')
             if (abs(max(time_A)-time) < time_resolution) or run_count > 10:
                 room_A.append(test_screen)
                 time_A.append(time)
@@ -450,11 +447,7 @@ def find_start_time_room_2(video, room_A, room_B, time_A, time_B, time_resolutio
             else:
                 # if not calc array of times
                 time_array = [time - time_resolution]
-                
-            #    print('time:',time)
-
                 array_test = min(time_array) > (max(time_A) + time_resolution)
-             #   print(array_test)
                 while array_test: 
                     time_array.append(min(time_array) - time_resolution)
                     array_test = min(time_array) > max(time_A) + time_resolution
@@ -464,9 +457,6 @@ def find_start_time_room_2(video, room_A, room_B, time_A, time_B, time_resolutio
                     test_screen_ind = get_screen_at_time(ind_time,video)
                     if any(test_screen_ind in room for room in room_A):
                         time_A.append(ind_time)
-                #        print('&&&')
-                #        print('maxA:',max(time_A))
-                #        print('minB:',min(time_B))
                         return find_start_time_room_2(video,room_A,room_B, time_A, time_B,time_resolution, run_count)
                 max_test_screen = get_screen_at_time(max(time_array),video)
                 time_A.append(max(time_array))
@@ -476,7 +466,6 @@ def find_start_time_room_2(video, room_A, room_B, time_A, time_B, time_resolutio
 
 def find_time_next_room_adaptive(video,time_previous, time_future,dT,rooms_list_selection,master_end_time, time_resolution, verbose_mode, count):
     # init code
-
 
     previous_room = rooms_list_selection[0]
     next_room = rooms_list_selection[1]
@@ -503,13 +492,6 @@ def find_time_next_room_adaptive(video,time_previous, time_future,dT,rooms_list_
                 room = get_screen_at_time(time,video)
             if time - X_time >= 2000:
                 return room, time, time - dT
-
-
-
-        # advance in 2 sec incriments looking for other rooms
-        # if next room is OG8 then output OG8
-        # if next room is not OG8 then output 
-
 
     # clean future room list
     if any('X-3' in future_room for future_room in future_rooms):
@@ -554,7 +536,6 @@ def find_time_next_room_adaptive(video,time_previous, time_future,dT,rooms_list_
     else:
         if next_room != 'OH8' and count < 6:
             count = count + 1
-            #print('count:',count)
             num_bumps = math.floor(e_dT/time_resolution)
             if verbose_mode: 
                 print(e_dT/time_resolution)
@@ -617,10 +598,6 @@ ap.add_argument("-d", "--delta", required=False,
     help="delta time")
 ap.add_argument("-nosave", required=False,
     help="don't save", action="store_true")
-ap.add_argument("-manual_mode", required=False,
-    help="not forced by end room list", action="store_true")
-ap.add_argument("-end", required=False,
-    help="end_time")
 ap.add_argument("-run", required=False,
     help="run number")
 
@@ -631,12 +608,8 @@ verbose = args["verbose"]
 run_start_time = args["start"]
 delta_time = args["delta"]
 nosave = args["nosave"]
-manual_mode = args["manual_mode"]
 run_number = args["run"]
 run_end_time = args["end"]
-
-# end_time_array = []
-# end_time_array.append(run_end_time)
 
 ## set default values
 
@@ -666,7 +639,6 @@ vidcap = cv2.VideoCapture(video)
 
 # create database file
 filename = os.path.basename(video)
-# TO DO -> check if file exists
 data_file = os.path.splitext(filename)[0] + '.db'
 if nosave == False:
     initialize_table = not(os.path.exists(data_file)) 
