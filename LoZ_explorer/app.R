@@ -77,12 +77,14 @@ server <- function(input, output) {
     # make your gg plot
     output$roomHist <- renderPlot({
       
+      
       ggplot(durations_for_rooms(), aes(x = Duration) ) + 
       geom_histogram(binwidth = input$bin_size,
                      fill = bar_color(),
                      position="identity",
                      alpha= 0.8) + 
-                     xlab(the_label())
+                     xlab(the_label())+
+      geom_vline(aes(xintercept =median(Duration)), col = 'darkred', size=1.5)
     })
 }
 
