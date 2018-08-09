@@ -11,6 +11,7 @@ import time
 import math
 import csv
 
+# test my branch- inserted in manual-mode
 
 def get_other_info(time,video):
     vidcap.set(cv2.CAP_PROP_POS_MSEC,time)
