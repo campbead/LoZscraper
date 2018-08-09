@@ -14,7 +14,7 @@ Watching him, I thought it would be cool to collect some data on how his speed r
 I have started to blog about this on [Medium](https://medium.com/@campbead) which has more descriptive analysis.  
 
 ## Using the scraper
-The scraper `adaptive_get_screens.py` was really my first attempt doing a Python project and it's not a pretty thing, but it works.  I'm going to document how to use the scraper more fully later but it's not a big priority.  
+The scraper `scrapeLOZ.py` was really my first attempt doing a Python project and it's not a pretty thing, but it works.  I'm going to document how to use the scraper more fully later but it's not a big priority.  
 
 The scraper works on an .mp4 file downloaded from twitch, I used [Arne Vogel's Concat](https://github.com/ArneVogel/concat) but you're free to use whatever tool you like.  
 
@@ -34,7 +34,7 @@ Output will be an sqlite database .db file of the same name as your video.
 
 ## Todo
 
-- [ ] Fully document `adaptive_get_screens.py`
+- [ ] Fully document `scrapeLOZ.py`
 - [ ] Get end time working on code.
 - [ ] Figure out if Run ends on Room 1
 - [ ] Check if video file exists
