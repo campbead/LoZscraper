@@ -93,18 +93,6 @@ def init_table(con):
         cur.execute("DROP TABLE IF EXISTS Screen")
         cur.execute("CREATE TABLE Screen(Run TEXT, Run_Man INT, Abs_time REAL, Room TEXT, Full_hearts REAL, Total_hearts INT, Rubies TEXT, Keys TEXT, Bombs TEXT)")
 
-def find_next_screen(begin_screen, begin_time, delta_t, vidcap):
-    initial_screen = True
-    time = begin_time
-    while initial_screen:
-        time = time + delta_t
-        screen = get_screen_at_time(time,vidcap)
-        if screen != begin_screen:
-            initial_screen = False
-    upper_bound_time = time
-    end_screen = screen
-    return end_screen, upper_bound_time
-
 def find_start_screen(begin_time, delta_t, vidcap):
     not_start = True
     time = begin_time
@@ -116,19 +104,7 @@ def find_start_screen(begin_time, delta_t, vidcap):
     upper_bound_time = time
     end_screen = screen
     return end_screen, upper_bound_time
-
-def find_time_room_switch(begin_screen, end_screen, begin_time, end_time, time_resolution,vidcap):
-    time = (begin_time + end_time)/2
-    new_screen = get_screen_at_time(time,vidcap)
-    if new_screen == begin_screen:
-        # if the middle time is the begining screen, search the later half
-        return find_time_room_switch(begin_screen, end_screen, time, end_time, time_resolution,vidcap)
-    else:
-        if time - begin_time < time_resolution:
-            return time, new_screen
-        else:
-            return find_time_room_switch(begin_screen, new_screen, begin_time, time, time_resolution,vidcap)
-        
+       
 def get_screen_at_time(time,vidcap):
     def in_overworld(image):
         gray_cut = 50 # cutoff for overworld gray
@@ -243,22 +219,11 @@ def get_screen_at_time(time,vidcap):
             screen = 'D' + X_L + Y_L
             return screen 
         
-def remove_blank_screens(screen_list):
-
-    return [screen for screen in screen_list if 'X' not in screen]
-
 def get_run_number(time,video):
     vidcap.set(cv2.CAP_PROP_POS_MSEC,time)
     success,image = vidcap.read()
     run_image = image[312:330,254:296]
     return get_number_text(run_image,'multi')
-
-def print_time_since_start(time, start_time):
-    delta_time = time - start_time
-    delta_time_sec = delta_time/1000
-    mins = math.floor(delta_time_sec/60)
-    secs = round(delta_time_sec - mins * 60)
-    print(mins, ':', secs)
 
 def load_room_list(room_list_file):
     with open(room_list_file, newline='') as csvfile:
@@ -374,7 +339,7 @@ def process_run(start_time, video, dT, run_number, master_room_list,
             # the next room, any time in that room, and the next time in the 
             # current room
             next_room_out, known_time_in_room, max_time_previous = \
-            find_time_next_room_2(video,time_previous, time_future, dT, 
+            find_time_next_room_adaptive(video,time_previous, time_future, dT, 
                                   rooms_list_selection, master_end_time, 
                                   time_resolution, verbose_mode, count)  
             
@@ -433,12 +398,6 @@ def process_run(start_time, video, dT, run_number, master_room_list,
             kill_video = True
         else:
             kill_video = False
-
-def my_min(list):
-    if len(list) > 0:
-        return min(list)
-    else:
-        return list
 
 def find_start_time_room(video, current_room, known_time_in_room, dT, time_resolution):
     time = (known_time_in_room + known_time_in_room-dT)/2
@@ -515,33 +474,7 @@ def find_start_time_room_2(video, room_A, room_B, time_A, time_B, time_resolutio
                 #print('^^^')
                 return find_start_time_room_2(video,room_A,room_B, time_A, time_B,time_resolution, run_count)
 
-
-            # LEGACY CODE
-            # un_id_room = True
-            # time_resolution_adapt = time_resolution
-            # while un_id_room:
-            #     plus_time = time + time_resolution_adapt
-            #     minus_time = time - time_resolution_adapt
-            #     plus_screen = get_screen_at_time(plus_time,video)
-            #     minus_screen = get_screen_at_time(minus_time,video)
-            #     if plus_screen == room_A:
-            #         time_A.append(plus_time)
-            #         un_id_room = False
-            #     if plus_screen == room_B:
-            #         time_B.append(plus_time)
-            #         un_id_room = False
-            #     if minus_screen == room_A:
-            #         time_A.append(minus_screen)
-            #         un_id_room = False
-            #     if minus_screen == room_B:
-            #         time_B.append(minus_screen)
-            #         un_id_room = False
-            #     if un_id_room == True:
-            #         time_resolution_adapt = time_resolution_adapt + time_resolution
-            #     else:
-            #         return find_start_time_room_2(video,room_A,room_b, time_A, time_B,time_resolution)
-
-def find_time_next_room_2(video,time_previous, time_future,dT,rooms_list_selection,master_end_time, time_resolution, verbose_mode, count):
+def find_time_next_room_adaptive(video,time_previous, time_future,dT,rooms_list_selection,master_end_time, time_resolution, verbose_mode, count):
     # init code
 
 
@@ -609,7 +542,7 @@ def find_time_next_room_2(video,time_previous, time_future,dT,rooms_list_selecti
         return room, time, max(time_previous)
     elif room == previous_room:
         time_previous.append(time)
-        return find_time_next_room_2(video,time_previous, time_future,dT,rooms_list_selection,master_end_time, time_resolution, verbose_mode, count)
+        return find_time_next_room_adaptive(video,time_previous, time_future,dT,rooms_list_selection,master_end_time, time_resolution, verbose_mode, count)
     elif room == 'OH8':
         return room, time, max(time_previous)
     elif any(room in future_room for future_room in future_rooms):
@@ -617,7 +550,7 @@ def find_time_next_room_2(video,time_previous, time_future,dT,rooms_list_selecti
         count = count + 1
         if count > 6:
             time_previous.append(time)
-        return find_time_next_room_2(video,time_previous, time_future,dT,rooms_list_selection,master_end_time, time_resolution, verbose_mode, count)
+        return find_time_next_room_adaptive(video,time_previous, time_future,dT,rooms_list_selection,master_end_time, time_resolution, verbose_mode, count)
     else:
         if next_room != 'OH8' and count < 6:
             count = count + 1
@@ -643,10 +576,10 @@ def find_time_next_room_2(video,time_previous, time_future,dT,rooms_list_selecti
                     return screen_bump, bump_time, max(time_previous)
                 elif screen_bump == previous_room:
                     time_previous.append(bump_time)
-                    return find_time_next_room_2(video,time_previous, time_future,dT,rooms_list_selection,master_end_time, time_resolution,verbose_mode, count)
+                    return find_time_next_room_adaptive(video,time_previous, time_future,dT,rooms_list_selection,master_end_time, time_resolution,verbose_mode, count)
                 elif any(screen_bump in future_room for future_room in future_rooms):
                     time_future.append(bump_time)
-                    return find_time_next_room_2(video,time_previous, time_future,dT,rooms_list_selection,master_end_time, time_resolution, verbose_mode, count)
+                    return find_time_next_room_adaptive(video,time_previous, time_future,dT,rooms_list_selection,master_end_time, time_resolution, verbose_mode, count)
                 elif screen_bump == 'OH8':
                     return screen_bump, bump_time, max(time_previous)
             if len(bump_times) == 0 and len(time_future) > 0:
@@ -655,54 +588,10 @@ def find_time_next_room_2(video,time_previous, time_future,dT,rooms_list_selecti
             else:
                 time = max(bump_times)
             time_previous.append(time)
-            return find_time_next_room_2(video,time_previous, time_future,dT,rooms_list_selection,master_end_time, time_resolution, verbose_mode, count)
+            return find_time_next_room_adaptive(video,time_previous, time_future,dT,rooms_list_selection,master_end_time, time_resolution, verbose_mode, count)
         else:    
             time_previous.append(time)
-            return find_time_next_room_2(video,time_previous, time_future,dT,rooms_list_selection,master_end_time, time_resolution, verbose_mode, count)
-
-def find_time_next_room(video,known_time_in_room,dT,rooms_list_selection,master_end_time):
-    current_room = rooms_list_selection[0]
-    time = known_time_in_room
-    next_room = rooms_list_selection[1]
-    time = time + dT
-    if time > master_end_time:
-        room = 'XXX'
-        return room, time
-    room = get_screen_at_time(time,video)
-    if room == current_room:
-        return find_time_next_room(video,time,dT,rooms_list_selection,master_end_time)
-    elif room == next_room:
-        return room, time
-    elif room == rooms_list_selection[2] or room == rooms_list_selection[3]: # if in a future room, reduce time until room found
-        dT = -1* abs(dT)/2
-        return find_time_next_room(video,time,dT,rooms_list_selection,master_end_time)
-    elif room == 'OH8':
-        return room, time
-    else:
-        #print(time)
-        bump_time = time + 200
-        test_room = get_screen_at_time(bump_time,video)
-        #print('test room :', test_room)
-        if test_room == next_room:
-        #    print('a')
-        #    print(test_room, bump_time)
-            return test_room, bump_time
-        elif test_room == current_room:
-        #    print('b')
-            return find_time_next_room(video,bump_time,dT,rooms_list_selection,master_end_time)
-        elif test_room == rooms_list_selection[2] or test_room == rooms_list_selection[3]:
-            dT = -1* abs(dT)/2
-            if abs(dT) < 100:
-                dT = -100
-        #    print('c')
-            return find_time_next_room(video,bump_time,dT,rooms_list_selection,master_end_time)
-        else:
-        #    print('d')
-            return find_time_next_room(video,time,dT,rooms_list_selection,master_end_time)
-def return_file_name_no_extension(full_path_filename):
-    base=os.path.basename(full_path_filename)
-    filename_no_ext = os.path.splitext(base)[0]
-    return filename_no_ext
+            return find_time_next_room_adaptive(video,time_previous, time_future,dT,rooms_list_selection,master_end_time, time_resolution, verbose_mode, count)
 
 def convert_room_list(room_list):
     converted_room_list = []
@@ -793,54 +682,10 @@ if room_list_file is None:
 unique_room_list = load_room_list(room_list_file)
 room_list = convert_room_list(unique_room_list)
 
+# run the normal adaptive run
+process_run(run_start_time, vidcap, DT_i, run_number, room_list, 
+            unique_room_list, time_resolution, con)
 
-
-if manual_mode == False:
-    # run the normal adaptive run.
-    process_run(run_start_time, vidcap, DT_i, run_number, room_list, 
-                unique_room_list, time_resolution, con)
-else:
-    screen_list = []
-    time_list = []
-    start_time = float(run_start_time)
-    screen = get_screen_at_time(start_time,vidcap)
-    while start_time < run_end_time:
-        screen_list.append(screen)
-        time_list.append(start_time)
-        new_screen, upper_bound_time = find_next_screen(screen, start_time, DT_i, vidcap)
-        new_time, new_screen = find_time_room_switch(screen,new_screen,start_time,upper_bound_time,100,vidcap)
-        print(new_screen , new_time)
-        start_time = new_time
-        screen = new_screen
-        if screen == 'OH8':
-            print_time_since_start(start_time,run_start_time)
-    screen_list.append(screen)
-    time_list.append(start_time)
-    print(screen_list)
-    print(time_list)
-    csvfile = 'full_room_' + str(DT_i) + '.csv'
-    data_export = np.column_stack((time_list, screen_list))
-    with open(csvfile, "w", newline='') as csv_file:
-        writer = csv.writer(csv_file, delimiter=',')
-        for item in data_export:
-            writer.writerow(item)
-
-#print('number of rooms:', len(time_list))
-#print('number of valid rooms:', len(remove_blank_screens(screen_list)))
 wall_end_time = time.time()
 elapsed = wall_end_time - wall_start_time
 print(elapsed)
-
-#print(screen_list)
-
-#csvfile = 'output_DT_' + str(DT_i) + '.csv'
-
-# data_export = np.column_stack((time_list, screen_list))
-
-# with open(csvfile, "w", newline='') as csv_file:
-#     writer = csv.writer(csv_file, delimiter=',')
-#     for item in data_export:
-#         writer.writerow(item)
-
-#print(time_list)
-# initial screen
