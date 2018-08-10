@@ -13,10 +13,16 @@ import csv
 
 
 def get_other_info(time,video):
+    """Returns a list containing full hearts, total hearts, rubies, keys 
+    and bombs.
+    
+    Keyword arguments:
+    time -- the time to query
+    video -- the video object
+    """
+    
     vidcap.set(cv2.CAP_PROP_POS_MSEC,time)
     success,image = vidcap.read()
-    time_image = image[540:600,50:297]
-    level_image = image[43:73,585:623]
     rubie_image = image[71:91,697:777]
     key_image = image[112:134,722:751]
     bomb_image = image[133:156,722:751]
@@ -28,6 +34,8 @@ def get_other_info(time,video):
     return output
 
 def get_num_hearts(image):
+    """Returns the number of full and total hearts."""
+    
     # definitions:
     lower_full = np.array([0, 15, 70])
     upper_full = np.array([30, 35, 250])
@@ -70,6 +78,12 @@ def get_num_hearts(image):
     return full_hearts, empty_hearts+full_hearts
 
 def get_number_text(image_selection,flag):
+    """Returns text in an image.
+    
+    Keyword arguments:
+    image_selection -- the image to analysis
+    flag -- a flag to denote type of text to expect
+    """
     gray = cv2.cvtColor(image_selection, cv2.COLOR_BGR2GRAY)
     filename = "{}.png".format(os.getpid())
     cv2.imwrite(filename, gray)
@@ -83,17 +97,27 @@ def get_number_text(image_selection,flag):
     return text
 
 def write_results(con,screen_data):
+    """Writes screen_data to database con."""
     with con:
         cur = con.cursor() 
         cur.execute("INSERT INTO Screen VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)", screen_data)
         
 def init_table(con):
+    """Initializes the table con."""
     with con:
         cur = con.cursor() 
         cur.execute("DROP TABLE IF EXISTS Screen")
         cur.execute("CREATE TABLE Screen(Run TEXT, Run_Man INT, Abs_time REAL, Room TEXT, Full_hearts REAL, Total_hearts INT, Rubies TEXT, Keys TEXT, Bombs TEXT)")
 
 def find_start_screen(begin_time, delta_t, vidcap):
+    """Searches vidcap for first 'OH8'screen.  Returns a screen 'OH8' and time.
+    
+    Keyword Arguments:
+    begin_time -- time to start the search
+    delta_t -- time step size when searching for screen
+    vidcap -- the video object
+    """
+    
     not_start = True
     time = begin_time
     while not_start:
@@ -106,7 +130,9 @@ def find_start_screen(begin_time, delta_t, vidcap):
     return end_screen, upper_bound_time
        
 def get_screen_at_time(time,vidcap):
+    """Returns Screen from a video object at a time."""
     def in_overworld(image):
+        """Returns a booleen, testing if screen is in overworld."""
         gray_cut = 50 # cutoff for overworld gray
         # convert image to gray scale
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -118,6 +144,7 @@ def get_screen_at_time(time,vidcap):
         else:
             return False
     def get_screen_coords(image):
+        """Returns a set of screen coordinates."""
         cutoff_area = 20
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         blurred = cv2.GaussianBlur(gray, (5, 5), 0)
@@ -220,12 +247,14 @@ def get_screen_at_time(time,vidcap):
             return screen 
         
 def get_run_number(time,video):
+    """Return a run number."""
     vidcap.set(cv2.CAP_PROP_POS_MSEC,time)
     success,image = vidcap.read()
     run_image = image[312:330,254:296]
     return get_number_text(run_image,'multi')
 
 def load_room_list(room_list_file):
+    """Returns list rooms from file."""
     with open(room_list_file, newline='') as csvfile:
         spamreader = csv.reader(csvfile, delimiter=',')
         room_list = []
@@ -235,7 +264,7 @@ def load_room_list(room_list_file):
 
 def process_run(start_time, video, dT, run_number, master_room_list, 
                 unique_room_list, time_resolution, con):
-    
+    """Run the scraper."""
     # some initializations 
     kill_room = 'XXX'
     kill_video = False
