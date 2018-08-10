@@ -609,7 +609,6 @@ run_start_time = args["start"]
 delta_time = args["delta"]
 nosave = args["nosave"]
 run_number = args["run"]
-run_end_time = args["end"]
 
 ## set default values
 
