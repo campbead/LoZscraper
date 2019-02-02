@@ -29,7 +29,7 @@ The scraper works on an .mp4 file downloaded from twitch, I used [Arne Vogel's C
 Output will be an sqlite database .db file of the same name as your video.
 
 ## Todo
-- [ ] Fully document `scrapeLOZ.py`, including function documentation
+I'm happy with the current version for my analysis but I may continue to update planned features in the future.
 
 ## Planned Features
 - [ ] Check to see if video file exists
