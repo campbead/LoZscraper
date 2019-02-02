@@ -34,7 +34,11 @@ def get_other_info(time,video):
     return output
 
 def get_num_hearts(image):
-    """Returns the number of full and total hearts."""
+    """Returns the number of full and total hearts.
+    
+    Keyword arguements:
+    image - image of hearts region
+    """
     
     # definitions:
     lower_full = np.array([0, 15, 70])
@@ -97,13 +101,22 @@ def get_number_text(image_selection,flag):
     return text
 
 def write_results(con,screen_data):
-    """Writes screen_data to database con."""
+    """Writes screen_data to database con.
+
+    Keyword arguements: 
+    con -- the database connection
+    screen_data -- the data to write
+    """
     with con:
         cur = con.cursor() 
         cur.execute("INSERT INTO Screen VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)", screen_data)
         
 def init_table(con):
-    """Initializes the table con."""
+    """Initializes the table con.
+    
+    Keyword arguements:
+    con -- the database connection
+    """
     with con:
         cur = con.cursor() 
         cur.execute("DROP TABLE IF EXISTS Screen")
