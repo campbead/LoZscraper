@@ -30,7 +30,6 @@ Output will be an sqlite database .db file of the same name as your video.
 
 ## Todo
 - [ ] Fully document `scrapeLOZ.py`, including function documentation
-- [ ] Remember that perfect is the enemy of good
 
 ## Planned Features
 - [ ] Check to see if video file exists
